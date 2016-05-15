@@ -1,0 +1,283 @@
+#footer,
+#header {
+    z-index: 2;
+    position: relative
+}
+
+body,
+dd,
+dl,
+dt,
+h1,
+h2,
+h3,
+h4,
+html,
+li,
+p,
+ul {
+    margin: 0;
+    padding: 0
+}
+
+html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none
+}
+
+body {
+    font: 12px/1.5 "PingFang SC", "Microsoft YaHei", sans-serif
+}
+
+li {
+    list-style: none
+}
+
+a:link,
+a:visited {
+    text-decoration: none
+}
+
+.cf:after,
+.cf:before {
+    content: " ";
+    display: table
+}
+
+.cf:after {
+    clear: both
+}
+
+.page {
+    min-height: 80px
+}
+
+.bimg {
+    display: block
+}
+
+.yen {
+    font-style: normal;
+    font-family: Arial;
+    vertical-align: middle;
+    -webkit-font-smoothing: antialiased
+}
+
+@font-face {
+    font-family: iconfont;
+    src: url(//at.alicdn.com/t/font_1451285102_3458169.eot);
+    src: url(//at.alicdn.com/t/font_1451285102_3458169.eot?#iefix) format("embedded-opentype"), url(//at.alicdn.com/t/font_1451285102_3458169.woff) format("woff"), url(//at.alicdn.com/t/font_1451285102_3458169.ttf) format("truetype"), url(//at.alicdn.com/t/font_1451285102_3458169.svg#iconfont) format("svg")
+}
+
+body {
+    min-height: 600px
+}
+
+#footer,
+#footer p,
+#header,
+#header p {
+    font-size: 12px
+}
+
+#header {
+    height: 80px;
+    background: linear-gradient(to right, rgba(27, 80, 90, 0.5), rgba(78, 20, 89, 0.5));
+    min-width: 1224px
+}
+
+#header .header-inner {
+    width: 1200px;
+    margin: 0 auto;
+    overflow: hidden
+}
+
+#header .logo {
+/*    width: 157px;
+    height: 45px;
+    margin-left: 14px;
+    margin-top: 18px;
+    float: left;
+    background-size: 156px 45px;
+    background-position: center center;
+    background-repeat: no-repeat*/
+    width: 75px;
+    height: 75px;
+    float: left;
+    background-size: 75px 75px;
+    background-position: center center;
+    background-repeat: no-repeat
+}
+
+#header .logo>a {
+    width: 100%;
+    height: 100%;
+    display: block
+}
+
+#header .log {
+    float: right
+}
+
+#header .log .log-menu {
+    float: right;
+    margin-top: 31px
+}
+
+#header .log .log-menu>li {
+    float: left
+}
+
+#header .log .log-menu>li>a {
+    padding: 0 10px;
+    display: block
+}
+
+#header .log .log-menu>li>a.logout {
+    border-left: #2c3540 1px solid
+}
+
+#header .log a {
+    color: #fff
+}
+
+#header .log a.username {
+    color: #eee
+}
+
+#header .log a.im sup {
+    display: none;
+    position: relative;
+    top: -.5em;
+    vertical-align: baseline;
+    color: #fc3e2d
+}
+
+#footer {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    bottom: 0;
+    padding-bottom: 20px
+}
+
+.footer-inner {
+    width: 1200px;
+    margin: 0 auto;
+    color: #888
+}
+
+.footer-inner a {
+    color: #888
+}
+
+.footer-inner .footer-bottom {
+    padding: 20px 0 30px 15px
+}
+
+.footer-inner .copyright {
+    float: left;
+    line-height: 21px
+}
+
+.footer-inner .regist {
+    float: left;
+    padding: 0 5px
+}
+
+.footer-inner .share {
+    float: right
+}
+
+.footer-inner .share a {
+    float: left;
+    width: 35px;
+    height: 35px;
+    margin: 9px 0 0 5px;
+    border: 1px solid #fff;
+    background: url(//gtms01.alicdn.com/tps/i1/TB1_2lcLXXXXXbiXXXXoUNlVpXX-300-1100.png) no-repeat;
+    cursor: pointer
+}
+
+.footer-inner .share .qq {
+    background-position: -190px 10px
+}
+
+.footer-inner .share .qq:hover {
+    background-position: -240px 10px
+}
+
+.footer-inner .share .sina {
+    background-position: -190px -40px
+}
+
+.footer-inner .share .sina:hover {
+    background-position: -240px -40px
+}
+
+.footer-inner .share .weixin {
+    background-position: -190px -90px;
+    width: 45px;
+    height: 35px;
+    position: relative;
+    z-index: 100
+}
+
+.footer-inner .share .weixin:hover {
+    background-position: -240px -90px
+}
+
+.footer-inner .share .qrcode {
+    display: none;
+    position: absolute;
+    top: -174px;
+    left: -129px;
+    width: 174px;
+    height: 174px;
+    border-right: 1px solid #e7e7e7;
+    background: url(//gtms02.alicdn.com/tps/i2/TB1nJQZKVXXXXXUXVXX47fRVpXX-174-174.jpg) 10px 0 no-repeat;
+    z-index: 99
+}
+
+.footer-inner img {
+    vertical-align: middle
+}
+
+a.J_btnbind,
+a.J_btnsign {
+    display: inline-block;
+    min-width: 60px;
+    height: 36px;
+    padding: 0 20px;
+    border: 2px solid #FC3E2D;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 36px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #FC3E2D;
+    color: #fff;
+    margin: 20px 10px 0
+}
+
+a.J_btnbind:link,
+a.J_btnbind:visited,
+a.J_btnsign:link,
+a.J_btnsign:visited {
+    color: #fff
+}
+
+a.J_btnbind:hover,
+a.J_btnsign:hover {
+    color: #fff!important;
+    opacity: .9
+}
+
+.cp-nav,
+.cp-nav a:link,
+.cp-nav a:visited {
+    color: #36C
+}
+
+.cp-nav a:hover {
+    text-decoration: underline
