@@ -24,7 +24,7 @@ var Page = {
     create: function*(nickname) {
         var self = this;
         console.log(nickname);
-        this.body = yield render('stage/stage', { 'messages': messages });
+        this.body = yield render('stagepage', {});
     }
 };
 

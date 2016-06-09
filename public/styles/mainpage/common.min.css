@@ -37,6 +37,9 @@ a:link,
 a:visited {
     text-decoration: none
 }
+a:hover {
+    cursor:pointer;
+}
 
 .cf:after,
 .cf:before {
@@ -82,8 +85,9 @@ body {
 
 #header {
     height: 80px;
-    background: linear-gradient(to right, rgba(27, 80, 90, 0.5), rgba(78, 20, 89, 0.5));
-    min-width: 1224px
+    /*background: linear-gradient(to right, rgba(27, 80, 90, 0.5), rgba(78, 20, 89, 0.5));*/
+    /*min-width: 1224px*/
+    /*background-color:;*/
 }
 
 #header .header-inner {
@@ -154,11 +158,16 @@ body {
 }
 
 #footer {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    position: absolute;
+    left:0;
+    z-index: 2;
+    padding:0;
+    background-color: #ffcc33;
     width: 100%;
-    border-top: 1px solid #ddd;
-    background-color: #fff;
     bottom: 0;
-    padding-bottom: 20px
 }
 
 .footer-inner {

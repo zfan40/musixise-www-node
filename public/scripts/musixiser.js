@@ -5,17 +5,18 @@ $(function() {
     var matchPattern = [0, 2, 4, 5, 7, 9, 11, 12];
     var testMatch = [0, 0, 0, 0, 0, 0, 0, 0];
     var record = '';
-    var socket = io('http://io.musixise.com:3002');
+    var socket = io('http://io.musixise.com');
+    var currentAudienceAmount = 0;
     //www.musixise.com/stage/fzw  => fzw (as stage name for socket)
-    var myname = location.href.match(/.*?stage\/(.*)/)[1];
-    socket.emit('create stage', myname);
+    var userID = location.href.match(/.*?stage\/(.*)/)[1];
+    socket.emit('create stage', userID);
     $MIDIOBJ.on('MIDImsg', function(data) {
         if (data.message.midi_msg[0] == 144) {
-            $('body').css('background-color', '#999');
-            setTimeout(function() { $('body').css('background-color', '#fff') }, 100);
+            $('.deviceStatus').css('background-color', '#f44');
+            setTimeout(function() { $('.deviceStatus').css('background-color', '#999') }, 100);
         }
         if (ready) {
-            data.message.from = myname;
+            data.message.from = userID;
             var msg = JSON.stringify(data.message);
             // console.log(msg); // it's a string
             record += msg;
@@ -33,16 +34,63 @@ $(function() {
                     }
                 }
             }
-            if (ready) { alert('nb'); }
+            if (ready) {
+                $('.prestage .hint').html('开始直播');
+                setTimeout(function() {
+                    $('.prestage').hide();
+                    $('.onstage').show();
+                }, 1000);
+            }
         }
     });
+    $('input').keydown(function(e) {
+        var content = $(this).val();
+        if (e.keyCode == 13 && content) {
+            $('#audienceMessageSection ul').prepend('<li>' + content + '</li>');
+            $(this).val('');
+            socket.emit('req_MusixiserComment',content);
+        }
+    });
+    $('#pickSongSection').click(function(e){
+        // console.log($(e.target.attr('sd')));
+        socket.emit('req_MusixiserPickSong','鸡巴');
+    });
 
+    function updateAudienceAmount(num) {
+        $('.currentAudienceAmount span').html(num);
+    }
 
     // socket.on('new message', function(data) {
     //     console.log('received message from my own');
     // });
 
     // socket.on('dup stage', function(){
-    //   alert(myname+" stage is on performance");
+    //   alert(userID+" stage is on performance");
+    // });
+    socket.on('AudienceCome', function() {
+        updateAudienceAmount(++currentAudienceAmount);
+        console.log('AudienceCome');
+    });
+    socket.on('AudienceLeave', function() {
+        if (currentAudienceAmount<=0) {
+            currentAudienceAmount = 0;
+        } else {
+            updateAudienceAmount(--currentAudienceAmount);    
+        }
+        
+        console.log('AudienceLeave');
+    });
+    socket.on('res_AudienceComment', function(msg) {
+        $('#audienceMessageSection ul').prepend('<li>' + msg + '</li>')
+    });
+    socket.on('res_AudienceOrderSong', function(msg) {
+        alert('1');
+        $('#pickSongSection ul').prepend('<li>' + msg + '<button>y</button><button>n</button></li>')
+    });
+    // socket.on('audienceTapFinger', function() {
+    //     console.log('audienceTapFinger');
+    // });
+    // socket.on('audienceGiveGift', function() {
+    //     console.log('audienceGiveGift');
     // });
 });
