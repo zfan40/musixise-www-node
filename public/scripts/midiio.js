@@ -33,7 +33,7 @@ $(function() {
                 input.value.onmidimessage = function(event) {
 
                     var MIDI_msg = event.data;
-                    console.log(MIDI_msg, 'by ' + event.currentTarget.id + 'with timre ' + 0);
+                    // console.log(MIDI_msg, 'by ' + event.currentTarget.id + 'with timre ' + 0);
                     //instant 入键
                     $midiobj.trigger({
                         type: "MIDImsg",

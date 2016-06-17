@@ -4,7 +4,7 @@ $(function() {
     var ready = false; //need to assure the midi instrument has connected, here, we ask the musician to play from C to C.
     var matchPattern = [0, 2, 4, 5, 7, 9, 11, 12];
     var testMatch = [0, 0, 0, 0, 0, 0, 0, 0];
-    var record = '';
+    record = [];
     var socket = io('http://io.musixise.com');
     var currentAudienceAmount = 0;
     //www.musixise.com/stage/fzw  => fzw (as stage name for socket)
@@ -18,9 +18,13 @@ $(function() {
         if (ready) {
             data.message.from = userID;
             var msg = JSON.stringify(data.message);
-            // console.log(msg); // it's a string
-            record += msg;
-            socket.emit('mmsg', msg);
+
+            if (data.message.midi_msg[0]!=254){//except active sensing
+                console.log('sending');
+                record.push([data.message.midi_msg[0],data.message.midi_msg[1],data.message.midi_msg[2],data.message.time]);
+                socket.emit('mmsg', msg);        
+            }
+
         } else { //test 大调音阶 ，视为ready，相当于是个验证码吧~  弹了大调音阶才能给听众传
             if (data.message.midi_msg[0] == 144) {
                 testMatch.push(data.message.midi_msg[1]);
@@ -53,7 +57,7 @@ $(function() {
     });
     $('#pickSongSection').click(function(e){
         // console.log($(e.target.attr('sd')));
-        socket.emit('req_MusixiserPickSong','鸡巴');
+        socket.emit('req_MusixiserPickSong','jj');
     });
 
     function updateAudienceAmount(num) {
