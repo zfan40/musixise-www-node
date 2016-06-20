@@ -19,10 +19,10 @@ $(function() {
             data.message.from = userID;
             var msg = JSON.stringify(data.message);
 
-            if (data.message.midi_msg[0]!=254){//except active sensing
+            if (data.message.midi_msg[0] != 254) { //except active sensing
                 console.log('sending');
-                record.push([data.message.midi_msg[0],data.message.midi_msg[1],data.message.midi_msg[2],data.message.time]);
-                socket.emit('mmsg', msg);        
+                record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], data.message.time]);
+                socket.emit('mmsg', msg);
             }
 
         } else { //test 大调音阶 ，视为ready，相当于是个验证码吧~  弹了大调音阶才能给听众传
@@ -52,12 +52,20 @@ $(function() {
         if (e.keyCode == 13 && content) {
             $('#audienceMessageSection ul').prepend('<li>' + content + '</li>');
             $(this).val('');
-            socket.emit('req_MusixiserComment',content);
+            socket.emit('req_MusixiserComment', content);
         }
     });
-    $('#pickSongSection').click(function(e){
-        // console.log($(e.target.attr('sd')));
-        socket.emit('req_MusixiserPickSong','jj');
+    $('#pickSongSection').click(function(e) {
+        var sendOutStr;
+        if ($(e.target).html() == 'y') {
+            sendOutStr = '即将演奏' + $(e.target).parent().attr('data-user') + '点播的' + $(e.target).parent().attr('data-songname');
+            $(e.target).parent().css('background-color', '#161');
+        } else if ($(e.target).html() == 'n') {
+            sendOutStr = 'uh，咱不会' + $(e.target).parent().attr('data-user') + '点播的' + $(e.target).parent().attr('data-songname');
+            $(e.target).parent().css('background-color', '#611');
+        } else {
+            return; }
+        socket.emit('req_MusixiserPickSong', sendOutStr);
     });
 
     function updateAudienceAmount(num) {
@@ -76,21 +84,21 @@ $(function() {
         console.log('AudienceCome');
     });
     socket.on('AudienceLeave', function() {
-        if (currentAudienceAmount<=0) {
+        if (currentAudienceAmount <= 0) {
             currentAudienceAmount = 0;
         } else {
-            updateAudienceAmount(--currentAudienceAmount);    
+            updateAudienceAmount(--currentAudienceAmount);
         }
-        
+
         console.log('AudienceLeave');
     });
     socket.on('res_AudienceComment', function(data) {
-        console.log(data);
-        $('#audienceMessageSection ul').prepend('<li>' + data.username+':'+data.msg + '</li>')
+        // console.log(data);
+        $('#audienceMessageSection ul').prepend('<li>' + data.username + ':' + data.msg + '</li>')
     });
     socket.on('res_AudienceOrderSong', function(data) {
-        console.log(data);
-        $('#pickSongSection ul').prepend('<li>' + data.username+':'+data.songname + '<button>y</button><button>n</button></li>')
+        // console.log(data);
+        $('#pickSongSection ul').prepend('<li data-user="' + data.username + '" data-songname="' + data.songname + '">' + data.username + ':' + data.songname + '<button>y</button><button>n</button></li>');
     });
     // socket.on('audienceTapFinger', function() {
     //     console.log('audienceTapFinger');
