@@ -84,12 +84,13 @@ $(function() {
         
         console.log('AudienceLeave');
     });
-    socket.on('res_AudienceComment', function(msg) {
-        $('#audienceMessageSection ul').prepend('<li>' + msg + '</li>')
+    socket.on('res_AudienceComment', function(data) {
+        console.log(data);
+        $('#audienceMessageSection ul').prepend('<li>' + data.username+':'+data.msg + '</li>')
     });
-    socket.on('res_AudienceOrderSong', function(msg) {
-        alert('1');
-        $('#pickSongSection ul').prepend('<li>' + msg + '<button>y</button><button>n</button></li>')
+    socket.on('res_AudienceOrderSong', function(data) {
+        console.log(data);
+        $('#pickSongSection ul').prepend('<li>' + data.username+':'+data.songname + '<button>y</button><button>n</button></li>')
     });
     // socket.on('audienceTapFinger', function() {
     //     console.log('audienceTapFinger');
