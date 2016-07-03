@@ -2,276 +2,288 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>musixise</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <!-- Normalize CSS  -->
-    <link rel="stylesheet" href="/styles/mainpage/common.min.css">
-    <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="/styles/mainpage/swiper.min.css">
-    <!-- Demo styles -->
-    <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
-    <!-- JQuery JS -->
-    <script src="/scripts/jquery.js"></script>
-    <style>
+  <meta charset="utf-8">
+  <title>musixise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <!-- Normalize CSS  -->
+  <link rel="stylesheet" href="/styles/mainpage/common.min.css">
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="/styles/mainpage/swiper.min.css">
+  <!-- Demo styles -->
+  <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+  <!-- JQuery JS -->
+  <script src="/scripts/jquery.js"></script>
+  <style>
     html,
     body {
-        position: relative;
-        height: 100%;
+      position: relative;
+      height: 100%;
     }
     
     body {
-        background: #eee;
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        color: #000;
-        margin: 0;
-        padding: 0;
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
     }
-
+    
     input:focus,
     select:focus,
     textarea:focus,
     button:focus {
-        outline: none;
+      outline: none;
     }
-
+    
     #header {
-        width:100%;
-        position: fixed;
+      width: 100%;
+      position: fixed;
     }
+    
     #header .logo {
-        background-color: #ffcc33;
+      background-color: #ffcc33;
     }
+    
     .swiper-container {
-        width: 100%;
-        height: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        background: #000;
+      width: 100%;
+      height: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      background: #000;
     }
     
     .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        /* Center slide text vertically */
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
+      text-align: center;
+      font-size: 18px;
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
     }
     
     .swiper-slide img {
-        /*max-width: 100%;*/
-        width: 1280px;
+      /*max-width: 100%;*/
+      width: 1280px;
     }
     
     .swiper-slide>p {
-        position: absolute;
-        color: #aaa;
-        top: 45%;
-        transform: translate(0%, -50%);
-        font-size: 48px;
-        width: 600px;
-        padding-bottom: 100px;
-        transition-duration: 1000ms;
+      position: absolute;
+      color: #aaa;
+      top: 45%;
+      transform: translate(0%, -50%);
+      font-size: 48px;
+      width: 600px;
+      padding-bottom: 100px;
+      transition-duration: 1000ms;
     }
+    
     .swiper-slide>p>r {
-        font-size: 32px;
+      font-size: 32px;
     }
     
     .swiper-slide .left {
-        left: 40px;
-        font-family: 'Dancing Script', cursive;
+      left: 40px;
+      font-family: 'Dancing Script', cursive;
     }
     
     .swiper-slide .right {
-        right: 40px;
-        font-family: 'Dancing Script', cursive;
+      right: 40px;
+      font-family: 'Dancing Script', cursive;
     }
     
     .popup {
-        background-color: rgba(255,255,255, 0.98);
-        border-radius: 5px;
-        position: fixed;
-        top: 201px;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        z-index: 100;
-        text-align: center;
+      background-color: rgba(255, 255, 255, 0.98);
+      border-radius: 5px;
+      position: fixed;
+      top: 201px;
+      left: 50%;
+      transform: translate(-50%, 0%);
+      z-index: 100;
+      text-align: center;
     }
     
     .popup .caption {
-        font-size: 40px;
-        line-height: 104px;
-        height: 104px;
-        /*color:rgba(27, 80, 90, 0.5);*/
-        /*color:#39797D;*/
-        color:#000;
+      font-size: 40px;
+      line-height: 104px;
+      height: 104px;
+      /*color:rgba(27, 80, 90, 0.5);*/
+      /*color:#39797D;*/
+      color: #000;
     }
     
     .popup input {
-        display: inline-block;
-        height: 40px;
-        width: 220px;
-        font-size: 16px;
-        line-height: 32px;
-        /*margin-bottom: 32px;*/
-        border-radius: 3px;
-        border: none;
-        padding: 0 10px;
-        border:1px solid #000;
-        color: #000;
-        background-color:rgba(255,255,255, 0.98);
+      display: inline-block;
+      height: 40px;
+      width: 220px;
+      font-size: 16px;
+      line-height: 32px;
+      /*margin-bottom: 32px;*/
+      border-radius: 3px;
+      border: none;
+      padding: 0 10px;
+      border: 1px solid #000;
+      color: #000;
+      background-color: rgba(255, 255, 255, 0.98);
     }
     
     .popup button {
-        cursor: pointer;
-        display: inline-block;
-        height: 40px;
-        width: 220px;
-        font-size: 16px;
-        line-height: 32px;
-        border-radius: 3px;
-        border: none;
-        /*background: linear-gradient(to right, rgba(27, 80, 90, 0.5), rgba(78, 20, 89, 0.5));*/
-        /*background-color:#39797D;*/
-        background-color: #000;
-        color: #fff;
+      cursor: pointer;
+      display: inline-block;
+      height: 40px;
+      width: 220px;
+      font-size: 16px;
+      line-height: 32px;
+      border-radius: 3px;
+      border: none;
+      /*background: linear-gradient(to right, rgba(27, 80, 90, 0.5), rgba(78, 20, 89, 0.5));*/
+      /*background-color:#39797D;*/
+      background-color: #000;
+      color: #fff;
     }
     
     #reg-popup {
-        height: 350px;
-        width: 290px;
+      height: 350px;
+      width: 290px;
     }
     
     #login-popup {
-        height: 350px;
-        width: 290px;
+      height: 350px;
+      width: 290px;
     }
+    
     .mask {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 999;
-        background: rgba(0,0,0,.8);
-        display: none;
-        color: #000;
-        -webkit-box-orient: horizontal;
-        -webkit-box-pack: center;
-        -webkit-box-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background: rgba(0, 0, 0, .8);
+      display: none;
+      color: #000;
+      -webkit-box-orient: horizontal;
+      -webkit-box-pack: center;
+      -webkit-box-align: center;
     }
-
-
+    
     ::-webkit-input-placeholder {
-       color: #000;
+      color: #000;
     }
-
-    :-moz-placeholder { /* Firefox 18- */
-       color: #000;  
+    
+    :-moz-placeholder {
+      /* Firefox 18- */
+      color: #000;
     }
-
-    ::-moz-placeholder {  /* Firefox 19+ */
-       color: #000;  
+    
+    ::-moz-placeholder {
+      /* Firefox 19+ */
+      color: #000;
     }
-
-    :-ms-input-placeholder {  
-       color: #000;  
+    
+    :-ms-input-placeholder {
+      color: #000;
     }
-
-    </style>
+  </style>
 </head>
 
 <body>
-    <div id="header">
-        <div class="header-inner">
-            <div class="logo" style="background-image:url('/imgs/mainpage/logo.png')">
-                <a href=""></a>
-            </div>
-            <div class="log">
-                <ul class="log-menu">
-                    <!-- <li><a class="username">小f</a></li> -->
-                    <!-- <li><a class="im" href="###" id="im_notify">消息<sup style="display: none;">●</sup></a></li> -->
-                    <li id="reg-anchor"><a>注册</a></li>
-                    <li id="login-anchor"><a>登陆</a></li>
-                    <li id="logout-anchor"><a class="logout">登出</a></li>
-                </ul>
-            </div>
-        </div>
+  <div id="header">
+    <div class="header-inner">
+      <div class="logo" style="background-image:url('/imgs/mainpage/logo.png')">
+        <a href=""></a>
+      </div>
+      <div class="log">
+        <ul class="log-menu">
+          <!-- <li><a class="username">小f</a></li> -->
+          <!-- <li><a class="im" href="###" id="im_notify">消息<sup style="display: none;">●</sup></a></li> -->
+          <li id="reg-anchor"><a>注册</a></li>
+          <li id="login-anchor"><a>登陆</a></li>
+          <li id="logout-anchor"><a class="logout">登出</a></li>
+        </ul>
+      </div>
     </div>
-    <!-- Swiper -->
+  </div>
+  <!-- Swiper -->
 
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img src="/imgs/mainpage/1.jpg">
-                <p class="left" id="quote0">Music comes straight from the heart and talks only to the heart.<br> -- <r>Sergei Rachmaninoff</r></p>
-            </div>
-            <div class="swiper-slide">
-                <img src="/imgs/mainpage/6.jpg">
-                <p class="left" id="quote1">Music is not a hobby, not even a passion with me; music is me.<br> -- <r>Arthor Rubinstein</r></p>
-            </div>
-            <div class="swiper-slide">
-                <img src="/imgs/mainpage/3.jpg">
-                <p class="right" id="quote2">Perfection itself is imperfection.<br> -- <r>Vladimir Horowitz</r></p>
-            </div>
-            <div class="swiper-slide">
-                <img src="/imgs/mainpage/4.jpg">
-                <p class="right" id="quote3">Music must be given to those who love it. I want to give free concerts; that's the answer.<br> -- <r>Sviataslav Richter</r></p>
-            </div>
-            <div class="swiper-slide">
-                <img src="/imgs/mainpage/4.jpg">
-                <div id="footer">京ICP备16027182号</div>
-            </div>   
-<!--             <div class="swiper-slide">
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="/imgs/mainpage/1.jpg">
+        <p class="left" id="quote0">Music comes straight from the heart and talks only to the heart.<br> --
+          <r>Sergei Rachmaninoff</r>
+        </p>
+      </div>
+      <div class="swiper-slide">
+        <img src="/imgs/mainpage/6.jpg">
+        <p class="left" id="quote1">Music is not a hobby, not even a passion with me; music is me.<br> --
+          <r>Arthor Rubinstein</r>
+        </p>
+      </div>
+      <div class="swiper-slide">
+        <img src="/imgs/mainpage/3.jpg">
+        <p class="right" id="quote2">Perfection itself is imperfection.<br> --
+          <r>Vladimir Horowitz</r>
+        </p>
+      </div>
+      <div class="swiper-slide">
+        <img src="/imgs/mainpage/4.jpg">
+        <p class="right" id="quote3">Music must be given to those who love it. I want to give free concerts; that's the answer.<br> --
+          <r>Sviataslav Richter</r>
+        </p>
+      </div>
+      <div class="swiper-slide">
+        <img src="/imgs/mainpage/4.jpg">
+        <div id="footer">京ICP备16027182号</div>
+      </div>
+      <!--             <div class="swiper-slide">
                 <img src="/imgs/mainpage/4.jpg">
                 <p class="right" id="quote3">Music must be given to those who love it. I want to give free concerts; that's the answer. </p>
             </div>  -->
-        </div>
-        <!-- Add Pagination -->
-        <div class="swiper-pagination"></div>
     </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
 
-    <div class="mask">
-        <div class="popup" id="reg-popup" style="display:none;">
-            <div class="caption">
-                <p>加入稀客</p>
-            </div>
-            <div>
-                <input placeholder="用户名" type="text" id="reg-username"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
-                <input placeholder="密码" type="password" id="reg-password"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
-                <button id="reg-login">注册</button>
-            </div>
-        </div>
-        <div class="popup" id="login-popup" style="display:none;">
-            <div class="caption">
-                <p>欢迎回来</p>
-            </div>
-            <div>
-                <input placeholder="用户名"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
-                <input placeholder="密码" type="password"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
-                <button>登陆</button>
-            </div>
-        </div>
+  <div class="mask">
+    <div class="popup" id="reg-popup" style="display:none;">
+      <div class="caption">
+        <p>加入稀客</p>
+      </div>
+      <div>
+        <input placeholder="用户名" type="text" id="reg-username"></input>
+        <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+        <input placeholder="密码" type="password" id="reg-password"></input>
+        <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+        <button id="reg-login">注册</button>
+      </div>
     </div>
-    <!-- Swiper JS -->
-    <script src="/scripts/mainpage/swiper.min.js"></script>
-    <!-- Initialize Swiper -->
-    <script>
+    <div class="popup" id="login-popup" style="display:none;">
+      <div class="caption">
+        <p>欢迎回来</p>
+      </div>
+      <div>
+        <input placeholder="用户名"></input>
+        <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+        <input placeholder="密码" type="password"></input>
+        <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+        <button>登陆</button>
+      </div>
+    </div>
+  </div>
+  <!-- Swiper JS -->
+  <script src="/scripts/mainpage/swiper.min.js"></script>
+  <!-- Initialize Swiper -->
+  <script>
     function bindPopReg() {
         document.querySelector('#reg-anchor').addEventListener('click', function() {
             document.querySelector('.mask').style.display = 'block';
@@ -345,6 +357,21 @@
         document.cookie = cookieString;
     }
     
+    function successDel(response) {
+      console.log(response)
+        if(response.id) { //注册成功
+            $.ajax({
+                url:"//api.musixise.com/api/authenticate",
+                dataType:"jsonp",
+                data:loginInfo,
+                type: 'POST',
+                success: function(response) {
+                    $('#login-anchor').html('<a href = "#">开始表演</a>');
+                }
+            })
+        }
+    }
+    
     //注册
     $('#reg-login').click(function() {
         var loginInfo = {
@@ -357,28 +384,14 @@
             url:"//api.musixise.com/api/musixisers/register",
             dataType:"jsonp",
             data:loginInfo,
-            type: 'POST'
-        }).done(function(response) {
-            if(response.id) { //注册成功
-                $.ajax({
-                    url:"//api.musixise.com/api/authenticate",
-                    dataType:"jsonp",
-                    data:loginInfo,
-                    type: 'POST'
-                }).done(function(response) {
-                    $('#login-anchor').html('<a href = "#">开始表演</a>');
-                }).catch(function(err) {
-                    alert("登录失败");
-                })
-            }
-        }).catch(function(err) {
-            alert("注册失败");
+            type: 'POST',
+            success: successDel,
+            error: function() {return;}
         })
     })
     
     //alert()
-    
-    </script>
+  </script>
 </body>
 
 </html>
