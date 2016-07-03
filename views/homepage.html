@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="/styles/mainpage/swiper.min.css">
     <!-- Demo styles -->
     <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+    <!-- JQuery JS -->
+    <script src="/scripts/jquery.js"></script>
     <style>
     html,
     body {
@@ -246,11 +248,11 @@
                 <p>加入稀客</p>
             </div>
             <div>
-                <input placeholder="用户名"></input>
+                <input placeholder="用户名" type="text" id="reg-username"></input>
                 <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
-                <input placeholder="密码" type="password"></input>
+                <input placeholder="密码" type="password" id="reg-password"></input>
                 <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
-                <button>注册</button>
+                <button id="reg-login">注册</button>
             </div>
         </div>
         <div class="popup" id="login-popup" style="display:none;">
@@ -323,6 +325,40 @@
     bindPopReg();
     bindPopLogin();
     bindHideMask();
+    
+    function getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)) {
+            return arr[2];
+        } else {
+            return null;
+        }
+    }
+
+    function setCookie(name, value, expiresHours) {
+        var cookieString = name + "=" + value;
+        if (expiresHours > 0) {
+            var date = new Date();
+            date.setTime(date.getTime + expiresHours * 3600 * 1000);
+            cookieString = cookieString + "; expires=" + date.toGMTString() + ';domain=.xiami.com;path=/';
+        }
+        document.cookie = cookieString;
+    }
+    
+    //注册
+    $('#reg-login').click(function() {
+        var loginInfo = {
+            username: $('#reg-username').val(),
+            password: $('#reg-password').val(),
+            //后台必须要email，但是注册没有text填，所以先写死
+            email: 'test@gmail.com'
+        }
+        $.post('//api.musixise.com/api/musixisers/register', loginInfo, function(response) {
+            console.log(response)
+        })
+    })
+    
+    
     </script>
 </body>
 
