@@ -378,7 +378,7 @@
             username: $('#reg-username').val(),
             password: $('#reg-password').val(),
             //后台必须要email，但是注册没有text填，所以先写死
-            email: 'test@gmail.com'
+            email: Math.random().toString().slice(2, 12) + '@gmail.com'
         }
         $.ajax({
             url:"//api.musixise.com/api/musixisers/register",
