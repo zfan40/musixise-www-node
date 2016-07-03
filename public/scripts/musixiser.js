@@ -9,6 +9,19 @@ $(function() {
     var currentAudienceAmount = 0;
     //www.musixise.com/stage/fzw  => fzw (as stage name for socket)
     var userID = location.href.match(/.*?stage\/(.*)/)[1];
+    // getCookie('access_token');
+    $.ajax({
+        type: 'POST',
+        // url: "//api.musixise.com/api/musixisers/getInfo",
+        url: "//101.200.212.87:8082/api/musixisers/getInfo",
+        headers: {
+            "Authorization": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWNoIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTQ3MDEyMDgxNX0.5VHSysGTFcv1v9ktBYBpTLFjXUzoaonpgUw-3-oNJfBcRthkqbQsgvPHuYhxB6oHG7lyj5KTt5xCJ229kSAjxA"
+        }
+    }).done(function(data) {
+        alert(data);
+    });
+    //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWNoIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTQ3MDEyMDgxNX0.5VHSysGTFcv1v9ktBYBpTLFjXUzoaonpgUw-3-oNJfBcRthkqbQsgvPHuYhxB6oHG7lyj5KTt5xCJ229kSAjxA
+
     socket.emit('create stage', userID);
     $MIDIOBJ.on('MIDImsg', function(data) {
         if (data.message.midi_msg[0] == 144) {
@@ -64,7 +77,8 @@ $(function() {
             sendOutStr = 'uh，咱不会' + $(e.target).parent().attr('data-user') + '点播的' + $(e.target).parent().attr('data-songname');
             $(e.target).parent().css('background-color', '#611');
         } else {
-            return; }
+            return;
+        }
         socket.emit('req_MusixiserPickSong', sendOutStr);
     });
 
@@ -106,4 +120,28 @@ $(function() {
     // socket.on('audienceGiveGift', function() {
     //     console.log('audienceGiveGift');
     // });
+
+
+
+    function getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)) {
+            return unescape(arr[2]);
+        } else {
+            return null;
+        }
+    }
+
+    // function setCookie(name, value, expiresHours) {
+    //     var cookieString = name + "=" + escape(value);
+    //     if (expiresHours > 0) {
+    //         var date = new Date();
+    //         date.setTime(date.getTime + expiresHours * 3600 * 1000);
+    //         cookieString = cookieString + "; expires=" + date.toGMTString() + ';domain=.xiami.com;path=/';
+    //     }
+    //     document.cookie = cookieString;
+    // }
+
+
+
 });
