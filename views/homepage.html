@@ -353,11 +353,30 @@
             //后台必须要email，但是注册没有text填，所以先写死
             email: 'test@gmail.com'
         }
-        $.post('//api.musixise.com/api/musixisers/register', loginInfo, function(response) {
-            console.log(response)
+        $.ajax({
+            url:"//api.musixise.com/api/musixisers/register",
+            dataType:"jsonp",
+            data:loginInfo,
+            type: 'POST'
+        }).done(function(response) {
+            if(response.id) { //注册成功
+                $.ajax({
+                    url:"//api.musixise.com/api/authenticate",
+                    dataType:"jsonp",
+                    data:loginInfo,
+                    type: 'POST'
+                }).done(function(response) {
+                    $('#login-anchor').html('<a href = "#">开始表演</a>');
+                }).catch(function(err) {
+                    alert("登录失败");
+                })
+            }
+        }).catch(function(err) {
+            alert("注册失败");
         })
     })
     
+    //alert()
     
     </script>
 </body>
