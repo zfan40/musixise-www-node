@@ -47,12 +47,18 @@
         position: fixed;
         top: 50%;
         left: 50%;
+        text-align: center;
         /* bring your own prefixes */
         transform: translate(-50%, -50%);
     }
     
     .prestage .hint {
         font-size: 42px;
+    }
+    .prestage #stagetitle {
+        height: 40px;
+        width: 400px;
+        text-align: center;
     }
     .onstage {
         position: relative;
@@ -99,7 +105,9 @@
 
 <body>
     <div class="prestage">
+        <input id="stagetitle" placeholder="本场演出标题，非必填" maxlength="30">
         <h2 class="hint">试奏大调音阶后进入直播</h2>
+
     </div>
     <div class="onstage" style="display:none;">
         <div class="dashboard-section" id="stageStatusSection">

@@ -11,16 +11,21 @@ $(function() {
     var userID = location.href.match(/.*?stage\/(.*)/)[1];
     // getCookie('access_token');
     $.ajax({
-        type: 'POST',
         // url: "//api.musixise.com/api/musixisers/getInfo",
         url: "//101.200.212.87:8082/api/musixisers/getInfo",
-        headers: {
-            "Authorization": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWNoIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTQ3MDEyMDgxNX0.5VHSysGTFcv1v9ktBYBpTLFjXUzoaonpgUw-3-oNJfBcRthkqbQsgvPHuYhxB6oHG7lyj5KTt5xCJ229kSAjxA"
+        type: 'get',
+        // contentType:'application/json',
+        // data:{},
+        // dataType:"jsonp",
+        beforeSend:function(xhr,settings){
+            xhr.setRequestHeader("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoZWhlaGUiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNDcwMTMxMjI1fQ.1qvcg0c7gCcLfQ9VIzPNz1scaVv4WLKOr4DC7YLd4059kTU5Th6RTvSVJdXY8it8MbrLWhAsXwN77QYFD6Uraw");
+        },
+        // headers:{"Authorization":"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWNoIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTQ3MDEyMjU5OX0.N5PER1DB-pE8T_LaXm_OrLRIFUkYHtVt-xM4-u1CREaWC3UhtOmcnQF1c0hd6LedN21EBU4JCqKPCgztI422eg"}
+        success:function(data,status) {
+            alert(data);
         }
-    }).done(function(data) {
-        alert(data);
+        
     });
-    //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsaWNoIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTQ3MDEyMDgxNX0.5VHSysGTFcv1v9ktBYBpTLFjXUzoaonpgUw-3-oNJfBcRthkqbQsgvPHuYhxB6oHG7lyj5KTt5xCJ229kSAjxA
 
     socket.emit('create stage', userID);
     $MIDIOBJ.on('MIDImsg', function(data) {
