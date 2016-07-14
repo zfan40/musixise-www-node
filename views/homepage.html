@@ -328,14 +328,18 @@
         }
     }
 
-    function setCookie(name, value, expiresHours) {
+    function setCookie(name, value, days) {
         var cookieString = name + "=" + value;
-        if (expiresHours > 0) {
+        if (days > 0) {
             var date = new Date();
-            date.setTime(date.getTime + expiresHours * 3600 * 1000);
-            cookieString = cookieString + "; expires=" + date.toGMTString() + ';domain=.xiami.com;path=/';
+            date.setTime(date.getTime() + days * 24 * 3600 * 1000);
+            cookieString = cookieString + "; expires=" + date.toGMTString() + ';domain=.musixise.com;path=/';
         }
         document.cookie = cookieString;
+    }
+
+    function deleteCookie(name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=.musixise.com;path=/';
     }
 
     function statusInit() {
@@ -399,8 +403,8 @@
                     console.log(res);
                     if (!res.errcode) {
                         alert("登陆成功");
-                        setCookie('dotcom_user', loginInfo.username, 24);
-                        setCookie('access_token', res.id_token, 24);
+                        setCookie('dotcom_user', loginInfo.username, 31);
+                        setCookie('access_token', res.id_token, 31);
                         $('#login-anchor').hide();
                         $('#reg-anchor').hide();
                         $('#stage-anchor').show();
@@ -450,15 +454,16 @@
         $('#stage-anchor').click(function() {
                 var username = getCookie('dotcom_user');
                 if (username) {
-                    location.href = location.host + '/stage' + username;
+                    location.href = '//'+location.host + '/stage/' + username;
                 } else {
                     location.reload();
                 }
             })
             //登出
         $('#logout-anchor').click(function() {
-            setCookie('dotcom_user', '');
-            setCookie('access_token', '');
+            deleteCookie('dotcom_user');
+            deleteCookie('access_token');
+            location.reload();
         })
     }
     </script>

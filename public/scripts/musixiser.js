@@ -39,22 +39,23 @@ $(function() {
         data:{},
         // dataType:"jsonp",
         beforeSend: function(xhr, settings) {
-            xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoZWhlaGUiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNDcwMTMxMjI1fQ.1qvcg0c7gCcLfQ9VIzPNz1scaVv4WLKOr4DC7YLd4059kTU5Th6RTvSVJdXY8it8MbrLWhAsXwN77QYFD6Uraw");
-            // xhr.setRequestHeader("Authorization", "Bearer "+access_token);
+            // xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYXNoaWtlbGFuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE0Njg0OTU0NTB9.SOtceQou2I92qIU4jTVixi74Tu2wjssqdDtBmzuStmgLTSxW58xUecFdxbI7otzbn2oLG9zYB4k4o0whY75zCg");
+            xhr.setRequestHeader("Authorization", "Bearer "+access_token);
             xhr.setRequestHeader("Accept", "application/json");
             xhr.setRequestHeader("Content-Type", "application/json");
         },
         success: function(data, status) {
-            alert(data);
+            console.log(data);
+            console.log(nickName);
             if (nickName == data.username) {
                 // checkReady();
             } else {
                 alert('错误账号');
-                location.replace(location.host);
+                // location.replace(location.host);
             }
             // userInfo = data;
         },
-        error: function() { console.log('failed'); }
+        error: function() { alert('账号信息有误，请重新登录'); }
     });
 
 
