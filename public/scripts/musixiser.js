@@ -47,19 +47,18 @@ $(function() {
         success: function(data, status) {
             console.log(data);
             console.log(nickName);
-            if (nickName == data.username) {
-                // checkReady();
+            if (nickName == data.data.username) {
+                checkReady();
             } else {
                 alert('错误账号');
-                // location.replace(location.host);
+                location.replace('//'+location.host);
             }
             // userInfo = data;
         },
         error: function() { alert('账号信息有误，请重新登录'); }
     });
 
-
-    checkReady();
+    // checkReady(); //测试时用这行，否则应该放在身份校验成功后
 
     function getCookie(name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");

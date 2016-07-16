@@ -440,6 +440,7 @@
                     console.log(res);
                     if (!res.errcode) {
                         alert("注册成功,请登陆");
+                        $('.mask').click();
                     } else {
                         alert(res.errmsg);
                     }
