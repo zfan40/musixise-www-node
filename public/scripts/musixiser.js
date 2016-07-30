@@ -14,7 +14,7 @@ $(function() {
             userId:'',
             userAvatar: '',
             stageTitle: '',
-            audienceNum: 0
+            audienceNum: 0//此处可造假数据...
         }
 
 
@@ -55,7 +55,12 @@ $(function() {
             }
             // userInfo = data;
         },
-        error: function() { alert('账号信息有误，请重新登录'); }
+        error: function() { 
+            alert('账号信息有误，请重新登录'); 
+            deleteCookie('dotcom_user');
+            deleteCookie('access_token');
+            location.replace('//'+location.host);
+        }
     });
 
     // checkReady(); //测试时用这行，否则应该放在身份校验成功后
@@ -68,7 +73,9 @@ $(function() {
             return null;
         }
     }
-
+    function deleteCookie(name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=.musixise.com;path=/';
+    }
     function checkReady() {
         $MIDIOBJ.on('MIDImsg', function(data) {
             if (data.message.midi_msg[0] == 144) {
@@ -121,17 +128,17 @@ $(function() {
             }
         });
         $('#pickSongSection').click(function(e) {
-            var sendOutStr;
+            var res;
             if ($(e.target).html() == 'y') {
-                sendOutStr = '即将演奏' + $(e.target).parent().attr('data-user') + '点播的' + $(e.target).parent().attr('data-songname');
+                res = {type:1,audienceName:$(e.target).parent().attr('data-user'),songName:$(e.target).parent().attr('data-songname')};
                 $(e.target).parent().css('background-color', '#161');
             } else if ($(e.target).html() == 'n') {
-                sendOutStr = 'uh，咱不会' + $(e.target).parent().attr('data-user') + '点播的' + $(e.target).parent().attr('data-songname');
+                res = {type:0,audienceName:$(e.target).parent().attr('data-user'),songName:$(e.target).parent().attr('data-songname')};
                 $(e.target).parent().css('background-color', '#611');
             } else {
                 return;
             }
-            socket.emit('req_MusixiserPickSong', sendOutStr);
+            socket.emit('req_MusixiserPickSong', res);
         });
 
         function updateAudienceAmount(num) {
