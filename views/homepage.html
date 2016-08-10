@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="/styles/mainpage/swiper.min.css">
     <!-- Demo styles -->
     <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+    <div style="display:none">
+        <script src="http://s95.cnzz.com/z_stat.php?id=1260048285&web_id=1260048285" language="JavaScript"></script>
+    </div>
     <!-- JQuery JS -->
     <script src="/scripts/jquery.js"></script>
     <style>
@@ -282,6 +285,14 @@
                 <button id="login-btn">登陆</button>
             </div>
         </div>
+        <div class="popup" id="upload-popup" style="display:none;">
+            <div class="caption">
+                <p>上传头像</p>
+            </div>
+            <div>
+                <input id="fileupload" type="file" name="files[]" multiple="">
+            </div>
+        </div>
     </div>
     <!-- Swiper JS -->
     <script src="/scripts/mainpage/swiper.min.js"></script>
@@ -305,6 +316,26 @@
             });
             document.querySelector('#login-popup').style.display = 'block';
         });
+    }
+
+    function bindUploadAvatar() {
+        var url = '//api.musixise.com/upload';
+        $('#fileupload').fileupload({
+                url: url,
+                dataType: 'json',
+                done: function(e, data) {
+                    console.log(e);
+                    console.log(data);
+                },
+                progressall: function(e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    // $('#progress .progress-bar').css(
+                    //     'width',
+                    //     progress + '%'
+                    // );
+                }
+            }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
     }
 
     function bindHideMask() {
@@ -415,6 +446,7 @@
                     }
                 },
                 error: function() {
+                    alert('账号信息有误请重试');
                     return;
                 }
             })
@@ -446,7 +478,7 @@
                     }
                 },
                 error: function() {
-                    return;
+                    alert("注册失败，请稍后再试");
                 }
             })
         });
@@ -455,7 +487,7 @@
         $('#stage-anchor').click(function() {
                 var username = getCookie('dotcom_user');
                 if (username) {
-                    location.href = '//'+location.host + '/stage/' + username;
+                    location.href = '//' + location.host + '/stage/' + username;
                 } else {
                     location.reload();
                 }

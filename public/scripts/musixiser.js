@@ -48,7 +48,7 @@ $(function() {
             console.log(data);
             console.log(nickName);
             if (nickName == data.data.username) {
-                checkReady();
+                rocknroll();
             } else {
                 alert('错误账号');
                 location.replace('//'+location.host);
@@ -63,7 +63,7 @@ $(function() {
         }
     });
 
-    // checkReady(); //测试时用这行，否则应该放在身份校验成功后
+    // rocknroll(); //测试时用这行，否则应该放在身份校验成功后
 
     function getCookie(name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
@@ -76,7 +76,14 @@ $(function() {
     function deleteCookie(name) {
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=.musixise.com;path=/';
     }
-    function checkReady() {
+    function saveWorkToLocal() {
+        var currentStamp = + new Date();
+        localStorage.setItem(''+currentStamp,JSON.stringify(record));
+    }
+    function sendWorkToServer() {
+
+    }
+    function rocknroll() {
         $MIDIOBJ.on('MIDImsg', function(data) {
             if (data.message.midi_msg[0] == 144) {
                 $('.deviceStatus').css('background-color', '#f44');
@@ -162,7 +169,6 @@ $(function() {
             } else {
                 updateAudienceAmount(--currentAudienceAmount);
             }
-
             console.log('AudienceLeave');
         });
         socket.on('res_AudienceComment', function(data) {
@@ -179,6 +185,7 @@ $(function() {
         // socket.on('audienceGiveGift', function() {
         //     console.log('audienceGiveGift');
         // });
+        
     }
 
 
