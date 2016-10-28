@@ -4,62 +4,67 @@ $(function() {
     var ready = false; //need to assure the midi instrument has connected, here, we ask the musician to play from C to C.
     var matchPattern = [0, 2, 4, 5, 7, 9, 11, 12];
     var testMatch = [0, 0, 0, 0, 0, 0, 0, 0];
-    record = [];
+    var record = [];
+    var recordMode = 0;
+
     var socket = io('http://io.musixise.com');
     var currentAudienceAmount = 0;
     //www.musixise.com/stage/fzw  => fzw (as stage name for socket)
-    var nickName = location.href.match(/.*?stage\/(.*)/)[1];
+    var uid = location.href.match(/.*?stage\/(.*)/)[1];
     var userInfo = {
-            name: nickName,
-            userId:'',
-            userAvatar: '',
-            stageTitle: '',
-            audienceNum: 0//此处可造假数据...
-        }
+        name: '',
+        uid: '',
+        userAvatar: '',
+        stageTitle: '',
+        audienceNum: 0 //此处可造假数据...
+    }
 
 
     var access_token = getCookie('access_token');
 
     //simulate userInfo
     var avatarlinks = ['https://gw.alicdn.com/tps/TB1rdVKLVXXXXXGXFXXXXXXXXXX-440-440.jpg',
-    'https://gw.alicdn.com/tps/TB1pwJLLVXXXXXWXFXXXXXXXXXX-100-100.jpg',
-    'https://gw.alicdn.com/tps/TB1xfBTLVXXXXcjXXXXXXXXXXXX-340-340.jpg',
-    'https://gw.alicdn.com/tps/TB10_9NLVXXXXaKXXXXXXXXXXXX-753-756.png',
-    'https://gw.alicdn.com/tps/TB1y4gELVXXXXXyXpXXXXXXXXXX-300-300.jpg',
-    'https://gw.alicdn.com/tps/TB1PepxJXXXXXabXXXXXXXXXXXX-274-274.png',
-    'https://gw.alicdn.com/tps/TB1RIrIJVXXXXaRXFXXXXXXXXXX-500-500.jpg',
+        'https://gw.alicdn.com/tps/TB1pwJLLVXXXXXWXFXXXXXXXXXX-100-100.jpg',
+        'https://gw.alicdn.com/tps/TB1xfBTLVXXXXcjXXXXXXXXXXXX-340-340.jpg',
+        'https://gw.alicdn.com/tps/TB10_9NLVXXXXaKXXXXXXXXXXXX-753-756.png',
+        'https://gw.alicdn.com/tps/TB1y4gELVXXXXXyXpXXXXXXXXXX-300-300.jpg',
+        'https://gw.alicdn.com/tps/TB1PepxJXXXXXabXXXXXXXXXXXX-274-274.png',
+        'https://gw.alicdn.com/tps/TB1RIrIJVXXXXaRXFXXXXXXXXXX-500-500.jpg',
     ];
-    userInfo.userAvatar = avatarlinks[parseInt(Math.random()*7)];
-    getCookie('access_token');
+    userInfo.userAvatar = avatarlinks[parseInt(Math.random() * 7)];
     $.ajax({
-        // url: "//api.musixise.com/api/musixisers/getInfo",
         url: "//api.musixise.com/api/musixisers/getInfo",
         type: 'GET',
         // contentType:'application/json',
-        data:{},
+        data: {},
         // dataType:"jsonp",
         beforeSend: function(xhr, settings) {
             // xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYXNoaWtlbGFuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE0Njg0OTU0NTB9.SOtceQou2I92qIU4jTVixi74Tu2wjssqdDtBmzuStmgLTSxW58xUecFdxbI7otzbn2oLG9zYB4k4o0whY75zCg");
-            xhr.setRequestHeader("Authorization", "Bearer "+access_token);
+            xhr.setRequestHeader("Authorization", "Bearer " + access_token);
             xhr.setRequestHeader("Accept", "application/json");
             xhr.setRequestHeader("Content-Type", "application/json");
         },
         success: function(data, status) {
             console.log(data);
-            console.log(nickName);
-            if (nickName == data.data.username) {
+            console.log(uid);
+            if (uid == data.data.userId) {
+                userInfo.uid = uid;
+                userInfo.name = data.data.username;
+                if (data.data.largeAvatar) {
+                    userInfo.userAvatar = data.data.largeAvatar;
+                }
                 rocknroll();
             } else {
                 alert('错误账号');
-                location.replace('//'+location.host);
+                location.replace('//' + location.host);
             }
             // userInfo = data;
         },
-        error: function() { 
-            alert('账号信息有误，请重新登录'); 
+        error: function() {
+            alert('账号信息有误，请重新登录');
             deleteCookie('dotcom_user');
             deleteCookie('access_token');
-            location.replace('//'+location.host);
+            location.replace('//' + location.host);
         }
     });
 
@@ -73,29 +78,68 @@ $(function() {
             return null;
         }
     }
+
     function deleteCookie(name) {
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=.musixise.com;path=/';
     }
-    function saveWorkToLocal() {
-        var currentStamp = + new Date();
-        localStorage.setItem(''+currentStamp,JSON.stringify(record));
-    }
-    function sendWorkToServer() {
 
+    function saveWorkToLocal() {
+        var currentStamp = +new Date();
+        localStorage.setItem('' + currentStamp, JSON.stringify(record));
     }
+
+    function saveWorkToServer() {
+        $.ajax({
+            url: "//api.musixise.com/api/musixisers/saveWork",
+            type: 'POST',
+            data: {
+                content:JSON.stringify(record)
+                // createtime: ''+ new Date()
+            },
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function(data, status) {
+                console.log(data);
+            },
+            error: function() {}
+        });
+    }
+
     function rocknroll() {
+        $('.recordBtn').click(function() {
+            if (recordMode == 0) {
+                recordMode = 1;
+                record = [];
+            } else {
+                recordMode = 0;
+            }
+            $('.recordBtn').toggleClass('active');
+        });
+        $('.publishBtn').click(function(){
+            if (record.length) {
+                saveWorkToServer();    
+            } else {
+                alert('record something first.');
+            }
+        });
         $MIDIOBJ.on('MIDImsg', function(data) {
             if (data.message.midi_msg[0] == 144) {
                 $('.deviceStatus').css('background-color', '#f44');
                 setTimeout(function() { $('.deviceStatus').css('background-color', '#999') }, 100);
             }
             if (ready) {
-                data.message.from = nickName;
+                data.message.from = uid;
                 var msg = JSON.stringify(data.message);
 
                 if (data.message.midi_msg[0] != 254) { //except active sensing
-                    console.log('sending');
-                    record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], data.message.time]);
+                    // console.log('sending');
+                    if (recordMode) {
+                        record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], data.message.time]);
+                    }
+
                     socket.emit('mmsg', msg);
                 }
 
@@ -126,6 +170,7 @@ $(function() {
                 }
             }
         });
+
         $('input').keydown(function(e) {
             var content = $(this).val();
             if (e.keyCode == 13 && content) {
@@ -137,10 +182,10 @@ $(function() {
         $('#pickSongSection').click(function(e) {
             var res;
             if ($(e.target).html() == 'y') {
-                res = {type:1,audienceName:$(e.target).parent().attr('data-user'),songName:$(e.target).parent().attr('data-songname')};
+                res = { type: 1, audienceName: $(e.target).parent().attr('data-user'), songName: $(e.target).parent().attr('data-songname') };
                 $(e.target).parent().css('background-color', '#161');
             } else if ($(e.target).html() == 'n') {
-                res = {type:0,audienceName:$(e.target).parent().attr('data-user'),songName:$(e.target).parent().attr('data-songname')};
+                res = { type: 0, audienceName: $(e.target).parent().attr('data-user'), songName: $(e.target).parent().attr('data-songname') };
                 $(e.target).parent().css('background-color', '#611');
             } else {
                 return;
@@ -157,7 +202,7 @@ $(function() {
         // });
 
         // socket.on('dup stage', function(){
-        //   alert(nickName+" stage is on performance");
+        //   alert(uid+" stage is on performance");
         // });
         socket.on('AudienceCome', function() {
             updateAudienceAmount(++currentAudienceAmount);
@@ -185,7 +230,7 @@ $(function() {
         // socket.on('audienceGiveGift', function() {
         //     console.log('audienceGiveGift');
         // });
-        
+
     }
 
 

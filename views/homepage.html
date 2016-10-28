@@ -20,7 +20,6 @@
     <script src="/scripts/jquery.ui.widget.js"></script>
     <!-- JQuery Upload -->
     <script src="/scripts/blueimp-upload.js"></script>
-
     <style>
     html,
     body {
@@ -160,8 +159,8 @@
     }
     
     #reg-popup {
-        height: 350px;
         width: 290px;
+        padding-bottom: 30px;
     }
     
     #login-popup {
@@ -201,6 +200,18 @@
     :-ms-input-placeholder {
         color: #000;
     }
+    
+    #user-avatar {
+        width: 50px;
+        position: relative;
+        height: 50px;
+        top: -15px;
+    }
+    
+    #user-avatar img {
+        width: 50px;
+        height: 50px;
+    }
     </style>
 </head>
 
@@ -219,6 +230,7 @@
                     <li id="stage-anchor" style="display:none;"><a>开始表演</a></li>
                     <li id="update-anchor" style="display:none;"><a>更新头像</a></li>
                     <li id="logout-anchor" style="display:none"><a class="logout">登出</a></li>
+                    <li id="user-avatar" style="display:none"><img src="http://oaeyej2ty.bkt.clouddn.com/OoUYoGVD_2016-03-09-1057251742.png"></li>
                 </ul>
             </div>
         </div>
@@ -272,10 +284,12 @@
                 <p>加入稀客</p>
             </div>
             <div>
-                <input placeholder="用户名" type="text" id="reg-username"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+                <input placeholder="账号名(字母及数字)" type="text" id="reg-username"></input>
+                <p style="height:20px;line-height:18px;color:red;padding:6px 24px"></p>
+                <input placeholder="艺名(展示)" type="text" id="reg-realname"></input>
+                <p style="height:20px;line-height:18px;color:red;padding:6px 24px"></p>
                 <input placeholder="密码" type="password" id="reg-password"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+                <p style="height:20px;line-height:18px;color:red;padding:6px 24px"></p>
                 <button id="reg-btn">注册</button>
             </div>
         </div>
@@ -293,7 +307,7 @@
         </div>
         <div class="popup" id="upload-popup" style="display:none;">
             <div class="caption">
-                <p>上传头像</p>
+                <p>更新头像</p>
             </div>
             <div>
                 <!-- <input id="fileupload" type="file" name="files[]" multiple=""> -->
@@ -305,64 +319,6 @@
     <script src="/scripts/mainpage/swiper.min.js"></script>
     <!-- Initialize Swiper -->
     <script>
-    function bindPopReg() {
-        document.querySelector('#reg-anchor').addEventListener('click', function() {
-            document.querySelector('.mask').style.display = 'block';
-            [].forEach.call(document.querySelectorAll('.popup'), function(ele) {
-                ele.style.display = 'none'
-            });
-            document.querySelector('#reg-popup').style.display = 'block';
-        });
-    }
-
-    function bindPopLogin() {
-        document.querySelector('#login-anchor').addEventListener('click', function() {
-            document.querySelector('.mask').style.display = 'block';
-            [].forEach.call(document.querySelectorAll('.popup'), function(ele) {
-                ele.style.display = 'none'
-            });
-            document.querySelector('#login-popup').style.display = 'block';
-        });
-    }
-
-    function bindUploadAvatar() {
-        var url = '//api.musixise.com/api/musixisers/uploadPic';
-        $("#update-anchor").click(function(){
-            $('.mask').show();
-            $('.popup').hide();
-            $('#upload-popup').show();
-        });
-        $('#fileupload').fileupload({
-                url: url,
-                dataType: 'json',
-                type:'POST',
-                done: function(e, data) {
-                    console.log(e);
-                    console.log(data);
-                },
-                progressall: function(e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    // $('#progress .progress-bar').css(
-                    //     'width',
-                    //     progress + '%'
-                    // );
-                }
-            }).prop('disabled', !$.support.fileInput)
-            .parent().addClass($.support.fileInput ? undefined : 'disabled');
-    }
-
-    function bindHideMask() {
-        document.querySelector('.mask').addEventListener('click', function(e) {
-            if (e.target.className == 'mask') {
-                document.querySelector('.mask').style.display = 'none';
-                [].forEach.call(document.querySelectorAll('.popup'), function(ele) {
-                    ele.style.display = 'none'
-                });
-            }
-
-        });
-    }
-
     function getCookie(name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
         if (arr = document.cookie.match(reg)) {
@@ -391,6 +347,8 @@
             $('#stage-anchor').show();
             $('#update-anchor').show();
             $('#logout-anchor').show();
+            $('#user-avatar img').attr('src', getCookie('user_avatar'));
+            $('#user-avatar').show();
         } else {
             $('#login-anchor').show();
             $('#reg-anchor').show();
@@ -429,9 +387,100 @@
     bindHideMask();
     bindUserInfo();
 
+    //注册弹框
+    function bindPopReg() {
+        document.querySelector('#reg-anchor').addEventListener('click', function() {
+            document.querySelector('.mask').style.display = 'block';
+            [].forEach.call(document.querySelectorAll('.popup'), function(ele) {
+                ele.style.display = 'none'
+            });
+            document.querySelector('#reg-popup').style.display = 'block';
+        });
+    }
 
+    //登录弹框
+    function bindPopLogin() {
+        document.querySelector('#login-anchor').addEventListener('click', function() {
+            document.querySelector('.mask').style.display = 'block';
+            [].forEach.call(document.querySelectorAll('.popup'), function(ele) {
+                ele.style.display = 'none'
+            });
+            document.querySelector('#login-popup').style.display = 'block';
+        });
+    }
+
+    //上传头像
+    function bindUploadAvatar() {
+        var url = '//api.musixise.com/api/musixisers/uploadPic';
+        $("#update-anchor").click(function() {
+            $('.mask').show();
+            $('.popup').hide();
+            $('#upload-popup').show();
+        });
+        $('#fileupload').fileupload({
+                url: url,
+                dataType: 'json',
+                type: 'POST',
+                done: function(e, data) {
+                    var avatarUrl = 'http://' + 'oaeyej2ty.bkt.clouddn.com/' + data.result.data;
+                    setCookie('user_avatar', avatarUrl, 31);
+                    $('#user-avatar img').attr('src', avatarUrl);
+                    $('#user-avatar').show();
+                    $('.mask').hide();
+                    $('.popup').hide();
+
+                    //更新用户信息（头像）
+                    $.ajax({
+                        url: "//api.musixise.com/api/musixisers/updateInfo",
+                        beforeSend: function(xhr, settings) {
+                            xhr.setRequestHeader("Authorization", "Bearer " + getCookie('access_token'));
+                            xhr.setRequestHeader("Accept", "application/json");
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                        },
+                        data: JSON.stringify({
+                            largeAvatar:avatarUrl,
+                            smallAvatar:avatarUrl
+                        }),
+                        type: 'PUT',
+                        success: function(res) {
+                            console.log(res);
+                            if (!res.errcode) {
+
+                            } else {
+                                alert(res.errmsg);
+                            }
+                        },
+                        error: function() {
+                            alert('更新用户信息（头像）失败鸟...');
+                            return;
+                        }
+                    });
+                },
+                progressall: function(e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    // $('#progress .progress-bar').css(
+                    //     'width',
+                    //     progress + '%'
+                    // );
+                }
+            }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    }
+
+    //Mask 隐藏
+    function bindHideMask() {
+        document.querySelector('.mask').addEventListener('click', function(e) {
+            if (e.target.className == 'mask') {
+                document.querySelector('.mask').style.display = 'none';
+                [].forEach.call(document.querySelectorAll('.popup'), function(ele) {
+                    ele.style.display = 'none'
+                });
+            }
+        });
+    }
+
+    //登陆
     function bindUserInfo() {
-        //登陆
         $('#login-btn').click(function() {
             var loginInfo = {
                 username: $('#login-username').val(),
@@ -451,11 +500,36 @@
                         alert("登陆成功");
                         setCookie('dotcom_user', loginInfo.username, 31);
                         setCookie('access_token', res.id_token, 31);
+
                         $('#login-anchor').hide();
                         $('#reg-anchor').hide();
                         $('#stage-anchor').show();
                         $('#logout-anchor').show();
                         $('#update-anchor').show();
+                        $.ajax({
+                            url: "//api.musixise.com/api/musixisers/getInfo",
+                            type: 'GET',
+                            data: {},
+                            beforeSend: function(xhr, settings) {
+                                xhr.setRequestHeader("Authorization", "Bearer " + res.id_token);
+                                xhr.setRequestHeader("Accept", "application/json");
+                                xhr.setRequestHeader("Content-Type", "application/json");
+                            },
+                            success: function(data, status) {
+                                console.log(data);
+                                setCookie('uid',data.data.userId,31);
+                                var avatar = data.data.largeAvatar
+                                if (avatar) {
+                                    setCookie('user_avatar', avatar, 31);
+
+                                    $('#user-avatar img').attr('src', avatar);
+                                    $('#user-avatar').show();
+                                }
+                            },
+                            error: function() {
+                                //shouldn't get error, since just succesfully get token, and use that to retrieve info. TODO: authenticate should return user info directly.not another interface.
+                            }
+                        });
                         $('.mask').click();
                     } else {
                         alert(res.errmsg);
@@ -473,6 +547,7 @@
             var loginInfo = {
                 username: $('#reg-username').val(),
                 password: $('#reg-password').val(),
+                nickname: $('#reg-realname').val(),
                 //后台必须要email，但是注册没有text填，所以先写死
                 email: Math.random().toString().slice(2, 12) + '@gmail.com'
             }
@@ -505,9 +580,9 @@
 
         //表演
         $('#stage-anchor').click(function() {
-                var username = getCookie('dotcom_user');
-                if (username) {
-                    location.href = '//' + location.host + '/stage/' + username;
+                var uid = getCookie('uid');
+                if (uid) {
+                    location.href = '//' + location.host + '/stage/' + uid;
                 } else {
                     location.reload();
                 }
@@ -516,6 +591,7 @@
         $('#logout-anchor').click(function() {
             deleteCookie('dotcom_user');
             deleteCookie('access_token');
+            deleteCookie('user_avatar');
             location.reload();
         })
     }

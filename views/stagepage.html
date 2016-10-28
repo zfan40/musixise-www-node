@@ -56,50 +56,82 @@
     .prestage .hint {
         font-size: 42px;
     }
+    
     .prestage #stagetitle {
         height: 40px;
         width: 400px;
         text-align: center;
     }
+    
     .onstage {
         position: relative;
     }
+    
     .dashboard-section {
         position: relative;
         display: inline-block;
         width: 50%;
-        height:400px;
+        height: 400px;
         float: left;
     }
+    
     #stageStatusSection {
         background-color: black;
         color: white;
     }
+    
     #giftSection {
         background-color: yellow;
     }
+    
     #audienceMessageSection {
         background-color: yellow;
-        overflow-y:scroll;
+        overflow-y: scroll;
     }
-        #audienceMessageSection input {
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
+    
+    #audienceMessageSection input {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }
+    
     #pickSongSection {
         color: white;
         background-color: black;
-        overflow-y:scroll;
+        overflow-y: scroll;
     }
-        #pickSongSection button {
-            background-color: yellow;
-        }
+    
+    #pickSongSection button {
+        background-color: yellow;
+    }
+    
     .deviceStatus {
         width: 10px;
         height: 10px;
         border-radius: 5px;
         background-color: #999;
+    }
+    
+    .recordBtn {
+        width: 10px;
+        height: 10px;
+        border-radius: 15px;
+        border: 10px solid #eee;
+        background-color: #776e6e;
+        box-shadow: 0px 0px 2px #ffff00;
+    }
+
+    .recordBtn.active {
+        background-color: red;
+    }
+
+    .publishBtn {
+        width: 10px;
+        height: 10px;
+        border-radius: 15px;
+        border: 10px solid yellow;
+        background-color: red;
+        box-shadow: 0px 0px 2px blue;
     }
     </style>
 </head>
@@ -108,13 +140,14 @@
     <div class="prestage">
         <input id="stagetitle" placeholder="给本场演出起个名字吧" maxlength="30">
         <h2 class="hint">试奏任意大调音阶开始演出</h2>
-
     </div>
     <div class="onstage" style="display:none;">
         <div class="dashboard-section" id="stageStatusSection">
             <h2>基本信息</h2>
             <div class="deviceStatus"></div>
             <div class="currentAudienceAmount"><span>0</span>在听</div>
+            <div class="recordBtn"></div>
+            <div class="publishBtn"></div>
             <!--    <div class="beLiked">0</div>
             <div class="beFollowed">0</div> -->
         </div>
@@ -131,7 +164,6 @@
             <h2 style="color:white">听众点歌</h2>
             <ul>
             </ul>
-
         </div>
     </div>
     <script src="/scripts/socket.io.js"></script>
