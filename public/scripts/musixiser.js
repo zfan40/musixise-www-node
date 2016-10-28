@@ -93,7 +93,8 @@ $(function() {
             url: "//api.musixise.com/api/musixisers/saveWork",
             type: 'POST',
             data: {
-                content:JSON.stringify(record)
+                // content:JSON.stringify(record)
+                content:'abcdefg'
                 // createtime: ''+ new Date()
             },
             beforeSend: function(xhr, settings) {
@@ -119,11 +120,11 @@ $(function() {
             $('.recordBtn').toggleClass('active');
         });
         $('.publishBtn').click(function(){
-            if (record.length) {
+            // if (record.length) {
                 saveWorkToServer();    
-            } else {
-                alert('record something first.');
-            }
+            // } else {
+                // alert('record something first.');
+            // }
         });
         $MIDIOBJ.on('MIDImsg', function(data) {
             if (data.message.midi_msg[0] == 144) {
