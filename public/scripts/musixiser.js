@@ -11,8 +11,10 @@ $(function() {
     var currentAudienceAmount = 0;
     //www.musixise.com/stage/fzw  => fzw (as stage name for socket)
     var uid = location.href.match(/.*?stage\/(.*)/)[1];
+    
     var userInfo = {
         name: '',
+        realname: '',
         uid: '',
         userAvatar: '',
         stageTitle: '',
@@ -31,7 +33,7 @@ $(function() {
         'https://gw.alicdn.com/tps/TB1PepxJXXXXXabXXXXXXXXXXXX-274-274.png',
         'https://gw.alicdn.com/tps/TB1RIrIJVXXXXaRXFXXXXXXXXXX-500-500.jpg',
     ];
-    userInfo.userAvatar = avatarlinks[parseInt(Math.random() * 7)];
+    
     $.ajax({
         url: "//api.musixise.com/api/musixisers/getInfo",
         type: 'GET',
@@ -39,6 +41,7 @@ $(function() {
         data: {},
         // dataType:"jsonp",
         beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
             // xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYXNoaWtlbGFuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE0Njg0OTU0NTB9.SOtceQou2I92qIU4jTVixi74Tu2wjssqdDtBmzuStmgLTSxW58xUecFdxbI7otzbn2oLG9zYB4k4o0whY75zCg");
             xhr.setRequestHeader("Authorization", "Bearer " + access_token);
             xhr.setRequestHeader("Accept", "application/json");
@@ -49,9 +52,12 @@ $(function() {
             console.log(uid);
             if (uid == data.data.userId) {
                 userInfo.uid = uid;
-                userInfo.name = data.data.username;
+                userInfo.name = data.data.username;//这个是用户登录名（英文字母数字）
+                userInfo.realname = data.data.realname;//展示的名字
                 if (data.data.largeAvatar) {
                     userInfo.userAvatar = data.data.largeAvatar;
+                } else {
+                    userInfo.userAvatar = avatarlinks[parseInt(Math.random() * 7)];
                 }
                 rocknroll();
             } else {
@@ -89,15 +95,15 @@ $(function() {
     }
 
     function saveWorkToServer() {
+        var work = {
+            content:JSON.stringify(record)
+        };
         $.ajax({
             url: "//api.musixise.com/api/musixisers/saveWork",
             type: 'POST',
-            data: {
-                // content:JSON.stringify(record)
-                content:'abcdefg'
-                // createtime: ''+ new Date()
-            },
+            data: JSON.stringify(work),
             beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                 xhr.setRequestHeader("Authorization", "Bearer " + access_token);
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Content-Type", "application/json");

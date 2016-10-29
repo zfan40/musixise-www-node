@@ -433,13 +433,14 @@
                     $.ajax({
                         url: "//api.musixise.com/api/musixisers/updateInfo",
                         beforeSend: function(xhr, settings) {
+                            xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                             xhr.setRequestHeader("Authorization", "Bearer " + getCookie('access_token'));
                             xhr.setRequestHeader("Accept", "application/json");
                             xhr.setRequestHeader("Content-Type", "application/json");
                         },
                         data: JSON.stringify({
-                            largeAvatar:avatarUrl,
-                            smallAvatar:avatarUrl
+                            largeAvatar:data.result.data,
+                            smallAvatar:data.result.data
                         }),
                         type: 'PUT',
                         success: function(res) {
@@ -489,6 +490,7 @@
             $.ajax({
                 url: "//api.musixise.com/api/authenticate",
                 beforeSend: function(xhr, settings) {
+                    xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                     xhr.setRequestHeader("Accept", "application/json");
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
@@ -511,6 +513,7 @@
                             type: 'GET',
                             data: {},
                             beforeSend: function(xhr, settings) {
+                                xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                                 xhr.setRequestHeader("Authorization", "Bearer " + res.id_token);
                                 xhr.setRequestHeader("Accept", "application/json");
                                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -518,6 +521,7 @@
                             success: function(data, status) {
                                 console.log(data);
                                 setCookie('uid',data.data.userId,31);
+                                setCookie('realname',data.data.realname,31);
                                 var avatar = data.data.largeAvatar
                                 if (avatar) {
                                     setCookie('user_avatar', avatar, 31);
@@ -554,6 +558,7 @@
             $.ajax({
                 url: "//api.musixise.com/api/musixisers/register",
                 beforeSend: function(xhr, settings) {
+                    xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                     xhr.setRequestHeader("Accept", "application/json");
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
