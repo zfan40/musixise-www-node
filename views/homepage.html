@@ -290,6 +290,15 @@
                 <p style="height:20px;line-height:18px;color:red;padding:6px 24px"></p>
                 <input placeholder="密码" type="password" id="reg-password"></input>
                 <p style="height:20px;line-height:18px;color:red;padding:6px 24px"></p>
+                <form style="display:none;" id="register-by-wechat" method="post" action="/z/register/wechat">  
+                    <input type="submit" value="微信注册" >
+                </form>
+                <form style="display:none;" id="register-by-weibo" method="post" action="/z/register/weibo">  
+                    <input type="submit" value="微博注册" >
+                </form>
+                <form style="display:none;" id="register-by-qq" method="post" action="/z/register/qq">  
+                    <input type="submit" value="QQ注册" >
+                </form>
                 <button id="reg-btn">注册</button>
             </div>
         </div>
@@ -301,13 +310,22 @@
                 <input placeholder="用户名" type="text" id="login-username"></input>
                 <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
                 <input placeholder="密码" type="password" id="login-password"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>    
+                <form style="display:none;" id="signin-by-wechat" method="post" action="/z/signin/wechat"> 
+                    <input type="submit" value="微信登录" >
+                </form>
+                <form style="display:none;" id="signin-by-weibo" method="post" action="/z/signin/weibo">  
+                    <input type="submit" value="微博登录" >
+                </form>
+                <form style="display:none;" id="signin-by-qq" method="post" action="/z/signin/qq">  
+                    <input type="submit" value="QQ登录" >
+                </form>
                 <button id="login-btn">登陆</button>
             </div>
         </div>
         <div class="popup" id="upload-popup" style="display:none;">
             <div class="caption">
-                <p>更新头像</p>
+                <p>更新头像(请上传正方形图片)</p>
             </div>
             <div>
                 <!-- <input id="fileupload" type="file" name="files[]" multiple=""> -->
@@ -343,12 +361,49 @@
     }
 
     function statusInit() {
-        if (getCookie('dotcom_user') && getCookie('access_token')) {
+        if (getCookie('access_token')) { //previous info stored in cookie
             $('#stage-anchor').show();
             $('#update-anchor').show();
             $('#logout-anchor').show();
             $('#user-avatar img').attr('src', getCookie('user_avatar'));
             $('#user-avatar').show();
+            alert('1');
+            $.ajax({    //check whether token expired,and also update info
+                url: "//api.musixise.com/api/user/getInfo",
+                type: 'POST',
+                data: {},
+                beforeSend: function(xhr, settings) {
+                    xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
+                    xhr.setRequestHeader("Authorization", "Bearer " + getCookie('access_token'));
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                },
+                success: function(data, status) {
+                    console.log(data);
+                    setCookie('uid',data.data.userId,31);
+                    setCookie('realname',data.data.realname,31);
+                    var avatar = data.data.largeAvatar
+                    if (avatar) {
+                        setCookie('user_avatar', avatar, 31);
+                        $('#user-avatar img').attr('src', avatar);
+                        $('#user-avatar').show();
+                    }
+                    $('#stage-anchor').show();
+                    $('#update-anchor').show();
+                    $('#logout-anchor').show();
+                    $('#user-avatar img').attr('src', getCookie('user_avatar'));
+                    $('#user-avatar').show();
+                },
+                error: function() {
+                    deleteCookie('dotcom_user');
+                    deleteCookie('access_token');
+                    deleteCookie('user_avatar');
+                    deleteCookie('realname');
+                    $('#login-anchor').show();
+                    $('#reg-anchor').show();
+                }
+            });
+
         } else {
             $('#login-anchor').show();
             $('#reg-anchor').show();
@@ -411,7 +466,7 @@
 
     //上传头像
     function bindUploadAvatar() {
-        var url = '//api.musixise.com/api/musixisers/uploadPic';
+        var url = '//api.musixise.com/api/picture/uploadPic';
         $("#update-anchor").click(function() {
             $('.mask').show();
             $('.popup').hide();
@@ -431,18 +486,19 @@
 
                     //更新用户信息（头像）
                     $.ajax({
-                        url: "//api.musixise.com/api/musixisers/updateInfo",
+                        url: "//api.musixise.com/api/user/updateInfo",
                         beforeSend: function(xhr, settings) {
                             xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                             xhr.setRequestHeader("Authorization", "Bearer " + getCookie('access_token'));
                             xhr.setRequestHeader("Accept", "application/json");
                             xhr.setRequestHeader("Content-Type", "application/json");
                         },
-                        data: JSON.stringify({
+                        data: JSON.stringify722825
+                        ({
                             largeAvatar:data.result.data,
                             smallAvatar:data.result.data
                         }),
-                        type: 'PUT',
+                        type: 'POST',
                         success: function(res) {
                             console.log(res);
                             if (!res.errcode) {
@@ -488,7 +544,7 @@
                 password: $('#login-password').val(),
             }
             $.ajax({
-                url: "//api.musixise.com/api/authenticate",
+                url: "//api.musixise.com/api/user/authenticate",
                 beforeSend: function(xhr, settings) {
                     xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                     xhr.setRequestHeader("Accept", "application/json");
@@ -509,8 +565,8 @@
                         $('#logout-anchor').show();
                         $('#update-anchor').show();
                         $.ajax({
-                            url: "//api.musixise.com/api/musixisers/getInfo",
-                            type: 'GET',
+                            url: "//api.musixise.com/api/user/getInfo",
+                            type: 'POST',
                             data: {},
                             beforeSend: function(xhr, settings) {
                                 xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
@@ -556,7 +612,7 @@
                 email: Math.random().toString().slice(2, 12) + '@gmail.com'
             }
             $.ajax({
-                url: "//api.musixise.com/api/musixisers/register",
+                url: "//api.musixise.com/api/user/register",
                 beforeSend: function(xhr, settings) {
                     xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
                     xhr.setRequestHeader("Accept", "application/json");
@@ -597,6 +653,7 @@
             deleteCookie('dotcom_user');
             deleteCookie('access_token');
             deleteCookie('user_avatar');
+            deleteCookie('realname');
             location.reload();
         })
     }

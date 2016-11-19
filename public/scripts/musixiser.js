@@ -35,8 +35,8 @@ $(function() {
     ];
     
     $.ajax({
-        url: "//api.musixise.com/api/musixisers/getInfo",
-        type: 'GET',
+        url: "//api.musixise.com/api/user/getInfo",
+        type: 'POST',
         // contentType:'application/json',
         data: {},
         // dataType:"jsonp",
@@ -99,7 +99,7 @@ $(function() {
             content:JSON.stringify(record)
         };
         $.ajax({
-            url: "//api.musixise.com/api/musixisers/saveWork",
+            url: "//api.musixise.com/api/work/create",
             type: 'POST',
             data: JSON.stringify(work),
             beforeSend: function(xhr, settings) {
