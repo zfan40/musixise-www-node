@@ -230,7 +230,7 @@
                     <li id="stage-anchor" style="display:none;"><a>开始表演</a></li>
                     <li id="update-anchor" style="display:none;"><a>更新头像</a></li>
                     <li id="logout-anchor" style="display:none"><a class="logout">登出</a></li>
-                    <li id="user-avatar" style="display:none"><img src="http://oaeyej2ty.bkt.clouddn.com/OoUYoGVD_2016-03-09-1057251742.png"></li>
+                    <li id="user-avatar" style="display:none"><img src=""></li>
                 </ul>
             </div>
         </div>
@@ -367,7 +367,6 @@
             $('#logout-anchor').show();
             $('#user-avatar img').attr('src', getCookie('user_avatar'));
             $('#user-avatar').show();
-            alert('1');
             $.ajax({    //check whether token expired,and also update info
                 url: "//api.musixise.com/api/user/getInfo",
                 type: 'POST',
@@ -493,8 +492,7 @@
                             xhr.setRequestHeader("Accept", "application/json");
                             xhr.setRequestHeader("Content-Type", "application/json");
                         },
-                        data: JSON.stringify722825
-                        ({
+                        data: JSON.stringify({
                             largeAvatar:data.result.data,
                             smallAvatar:data.result.data
                         }),

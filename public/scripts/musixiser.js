@@ -21,18 +21,7 @@ $(function() {
         audienceNum: 0 //此处可造假数据...
     }
 
-
     var access_token = getCookie('access_token');
-
-    //simulate userInfo
-    var avatarlinks = ['https://gw.alicdn.com/tps/TB1rdVKLVXXXXXGXFXXXXXXXXXX-440-440.jpg',
-        'https://gw.alicdn.com/tps/TB1pwJLLVXXXXXWXFXXXXXXXXXX-100-100.jpg',
-        'https://gw.alicdn.com/tps/TB1xfBTLVXXXXcjXXXXXXXXXXXX-340-340.jpg',
-        'https://gw.alicdn.com/tps/TB10_9NLVXXXXaKXXXXXXXXXXXX-753-756.png',
-        'https://gw.alicdn.com/tps/TB1y4gELVXXXXXyXpXXXXXXXXXX-300-300.jpg',
-        'https://gw.alicdn.com/tps/TB1PepxJXXXXXabXXXXXXXXXXXX-274-274.png',
-        'https://gw.alicdn.com/tps/TB1RIrIJVXXXXaRXFXXXXXXXXXX-500-500.jpg',
-    ];
     
     $.ajax({
         url: "//api.musixise.com/api/user/getInfo",
@@ -54,11 +43,7 @@ $(function() {
                 userInfo.uid = uid;
                 userInfo.name = data.data.username;//这个是用户登录名（英文字母数字）
                 userInfo.realname = data.data.realname;//展示的名字
-                if (data.data.largeAvatar) {
-                    userInfo.userAvatar = data.data.largeAvatar;
-                } else {
-                    userInfo.userAvatar = avatarlinks[parseInt(Math.random() * 7)];
-                }
+                userInfo.userAvatar = data.data.largeAvatar;
                 rocknroll();
             } else {
                 alert('错误账号');
@@ -95,6 +80,10 @@ $(function() {
     }
 
     function saveWorkToServer() {
+        if (record.length==0) {
+            alert('请先录点啥吧');
+            return;
+        }
         var work = {
             content:JSON.stringify(record)
         };
@@ -110,6 +99,9 @@ $(function() {
             },
             success: function(data, status) {
                 console.log(data);
+                alert('上传成功，请登录APP查看');
+                record = [];
+                $('.publishBtn').prop("disabled", true);
             },
             error: function() {}
         });
@@ -120,8 +112,14 @@ $(function() {
             if (recordMode == 0) {
                 recordMode = 1;
                 record = [];
+                //publish invalid
+                $('.publishBtn').prop("disabled", true);
             } else {
                 recordMode = 0;
+                //publish valid
+                if (record.length) {
+                   $('.publishBtn').prop("disabled", false); 
+                }
             }
             $('.recordBtn').toggleClass('active');
         });
