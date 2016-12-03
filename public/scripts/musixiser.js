@@ -6,12 +6,12 @@ $(function() {
     var testMatch = [0, 0, 0, 0, 0, 0, 0, 0];
     var record = [];
     var recordMode = 0;
-
+    var recordStartTime = 0;
     var socket = io('http://io.musixise.com');
     var currentAudienceAmount = 0;
     //www.musixise.com/stage/fzw  => fzw (as stage name for socket)
     var uid = location.href.match(/.*?stage\/(.*)/)[1];
-    
+
     var userInfo = {
         name: '',
         realname: '',
@@ -22,7 +22,7 @@ $(function() {
     }
 
     var access_token = getCookie('access_token');
-    
+
     $.ajax({
         url: "//api.musixise.com/api/user/getInfo",
         type: 'POST',
@@ -110,6 +110,7 @@ $(function() {
     function rocknroll() {
         $('.recordBtn').click(function() {
             if (recordMode == 0) {
+                recordStartTime = performance.now();//!!!!!!!!!! may be big bug...hahaha
                 recordMode = 1;
                 record = [];
                 //publish invalid
@@ -118,14 +119,14 @@ $(function() {
                 recordMode = 0;
                 //publish valid
                 if (record.length) {
-                   $('.publishBtn').prop("disabled", false); 
+                   $('.publishBtn').prop("disabled", false);
                 }
             }
             $('.recordBtn').toggleClass('active');
         });
         $('.publishBtn').click(function(){
             // if (record.length) {
-                saveWorkToServer();    
+                saveWorkToServer();
             // } else {
                 // alert('record something first.');
             // }
@@ -142,7 +143,7 @@ $(function() {
                 if (data.message.midi_msg[0] != 254) { //except active sensing
                     // console.log('sending');
                     if (recordMode) {
-                        record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], data.message.time]);
+                        record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], data.message.time - recordStartTime]);
                     }
 
                     socket.emit('mmsg', msg);
