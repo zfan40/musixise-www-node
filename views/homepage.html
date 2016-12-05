@@ -120,12 +120,34 @@
     }
     
     .popup .caption {
+        text-align: center;
+        display:flex;
+        align-items:stretch;
+        flex-direction:column;
         font-size: 40px;
-        line-height: 104px;
+        /*line-height: 104px;*/
         height: 104px;
         /*color:rgba(27, 80, 90, 0.5);*/
         /*color:#39797D;*/
         color: #000;
+        
+    }
+    .popup .caption .caption1 {
+        flex:2;
+        display: flex;
+        align-items:center;
+    }
+    .popup .caption .caption2{
+        flex:1;
+        display: flex;
+        /*align-items:center;*/
+    }
+    .popup .caption .caption1 p{
+        flex:1;
+    }
+    .popup .caption .caption2 p{
+        flex:1;
+        font-size: 12px;
     }
     
     .popup input {
@@ -164,8 +186,8 @@
     }
     
     #login-popup {
-        height: 350px;
         width: 290px;
+        padding-bottom: 30px;   
     }
     
     .mask {
@@ -281,7 +303,9 @@
     <div class="mask">
         <div class="popup" id="reg-popup" style="display:none;">
             <div class="caption">
-                <p>加入稀客</p>
+                <div class="caption1">
+                    <p>加入稀客</p>
+                </div>
             </div>
             <div>
                 <input placeholder="账号名(字母及数字)" type="text" id="reg-username"></input>
@@ -304,7 +328,12 @@
         </div>
         <div class="popup" id="login-popup" style="display:none;">
             <div class="caption">
-                <p>欢迎回来</p>
+                <div class="caption1">
+                    <p>欢迎回来</p>
+                </div>
+                <div class="caption2">
+                    <p>暂不支持第三方账号登录</p>
+                </div>
             </div>
             <div>
                 <input placeholder="用户名" type="text" id="login-username"></input>
@@ -320,6 +349,7 @@
                 <form style="display:none;" id="signin-by-qq" method="post" action="/z/signin/qq">  
                     <input type="submit" value="QQ登录" >
                 </form>
+                
                 <button id="login-btn">登陆</button>
             </div>
         </div>
@@ -539,7 +569,7 @@
         $('#login-btn').click(function() {
             var loginInfo = {
                 username: $('#login-username').val(),
-                password: $('#login-password').val(),
+                password: $('#login-password').val()
             }
             $.ajax({
                 url: "//api.musixise.com/api/user/authenticate",
