@@ -23,6 +23,22 @@ $(function() {
 
     var access_token = getCookie('access_token');
 
+    var saveWorkDialogEverShowed = false;
+
+    //Mask 隐藏
+    function bindHideMask() {
+        document.querySelector('.mask').addEventListener('click', function(e) {
+            if (e.target.className == 'mask') {
+                document.querySelector('.mask').style.display = 'none';
+                [].forEach.call(document.querySelectorAll('.popup'), function(ele) {
+                    ele.style.display = 'none'
+                });
+            }
+        });
+    }
+    bindHideMask();
+
+
     $.ajax({
         url: "//api.musixise.com/api/user/getInfo",
         type: 'POST',
@@ -30,7 +46,7 @@ $(function() {
         data: {},
         // dataType:"jsonp",
         beforeSend: function(xhr, settings) {
-            xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
+            xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             // xhr.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYXNoaWtlbGFuZyIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE0Njg0OTU0NTB9.SOtceQou2I92qIU4jTVixi74Tu2wjssqdDtBmzuStmgLTSxW58xUecFdxbI7otzbn2oLG9zYB4k4o0whY75zCg");
             xhr.setRequestHeader("Authorization", "Bearer " + access_token);
             xhr.setRequestHeader("Accept", "application/json");
@@ -41,8 +57,8 @@ $(function() {
             console.log(uid);
             if (uid == data.data.userId) {
                 userInfo.uid = uid;
-                userInfo.name = data.data.username;//这个是用户登录名（英文字母数字）
-                userInfo.realname = data.data.realname;//展示的名字
+                userInfo.name = data.data.username; //这个是用户登录名（英文字母数字）
+                userInfo.realname = data.data.realname; //展示的名字
                 userInfo.userAvatar = data.data.largeAvatar;
                 rocknroll();
             } else {
@@ -79,38 +95,113 @@ $(function() {
         localStorage.setItem('' + currentStamp, JSON.stringify(record));
     }
 
-    function saveWorkToServer() {
-        if (record.length==0) {
+    function showSaveWorkDialog() {
+        if (record.length == 0) {
             alert('请先录点啥吧');
             return;
         }
+        if (!saveWorkDialogEverShowed) {
+
+            document.querySelector('.upload-work-dialog button').addEventListener('click', function() {
+                saveWorkToServer();
+            })
+            saveWorkDialogEverShowed = true;
+        }
+        $('.mask').show();
+        $('.upload-work-dialog').show();
+    }
+
+    function saveWorkToServer() {
         var work = {
-            content:JSON.stringify(record)
+            content: JSON.stringify(record)
         };
-        $.ajax({
-            url: "//api.musixise.com/api/work/create",
-            type: 'POST',
-            data: JSON.stringify(work),
-            beforeSend: function(xhr, settings) {
-                xhr.setRequestHeader("Access-Control-Allow-Origin",'*');
-                xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-            },
-            success: function(data, status) {
-                console.log(data);
-                alert('上传成功，请登录APP查看');
-                record = [];
-                $('.publishBtn').prop("disabled", true);
-            },
-            error: function() {}
-        });
+
+        //test
+        // console.log(work);
+        // return;
+
+
+        //把midi串本地弄成文件，然后传到cdn
+        // var form = new FormData();
+        // var blob = new Blob([JSON.stringify(record)],{type:'text/plain'});
+        // var request = new XMLHttpRequest();
+
+        // form.append("blob", blob);
+        // request.open(
+        //     "POST",
+        //     "//api.musixise.com/api/picture/uploadPic",
+        //     true
+        // );
+        // request.send(form);
+        // return;
+
+        //jquery把midi串本地弄成文件，然后传到cdn
+        // var fd = new FormData();
+        // var blob = new Blob([JSON.stringify(record)], { type: 'text/plain' });
+        // fd.append('fname', 'hh.txt');
+        // fd.append('data', blob);
+        // console.log(fd);
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '//api.musixise.com/api/picture/uploadPic',
+        //     data: fd,
+        //     processData: false,
+        //     contentType: false
+        // }).done(function(data) {
+        //     console.log(data);
+        // });
+        // return;
+
+
+        //
+        var blob = new Blob([JSON.stringify(record)]);
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var fd = new FormData();
+            fd.append('fname', 'test.txt');
+            fd.append('data', event.target.result);
+            console.log(atob(event.target.result.split(',')[1])); //base64转一下
+            $.ajax({
+                type: 'POST',
+                url: '//api.musixise.com/api/uploadAudio',
+                data: fd,
+                contentType: 'multipart/form-data',
+                processData: false,
+                contentType: false
+            }).done(function(data) {
+                var workURL = ('http://oaeyej2ty.bkt.clouddn.com/' + data.data);
+
+                $.ajax({
+                    url: "//api.musixise.com/api/work/create",
+                    type: 'POST',
+                    data: JSON.stringify({content:workURL}),
+                    beforeSend: function(xhr, settings) {
+                        xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
+                        xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+                        xhr.setRequestHeader("Accept", "application/json");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                    },
+                    success: function(data, status) {
+                        console.log(data);
+                        alert('上传成功，请登录APP查看');
+                        record = [];
+                        $('.publishBtn').prop("disabled", true);
+                    },
+                    error: function() {}
+                });
+            });
+        };
+        // trigger the read from the reader...
+        reader.readAsDataURL(blob);
+
+
+
     }
 
     function rocknroll() {
         $('.recordBtn').click(function() {
             if (recordMode == 0) {
-                recordStartTime = performance.now();//!!!!!!!!!! may be big bug...hahaha
+                recordStartTime = performance.now(); //!!!!!!!!!! may be big bug...hahaha
                 recordMode = 1;
                 record = [];
                 //publish invalid
@@ -119,16 +210,16 @@ $(function() {
                 recordMode = 0;
                 //publish valid
                 if (record.length) {
-                   $('.publishBtn').prop("disabled", false);
+                    $('.publishBtn').prop("disabled", false);
                 }
             }
             $('.recordBtn').toggleClass('active');
         });
-        $('.publishBtn').click(function(){
+        $('.publishBtn').click(function() {
             // if (record.length) {
-                saveWorkToServer();
+            showSaveWorkDialog();
             // } else {
-                // alert('record something first.');
+            // alert('record something first.');
             // }
         });
         $MIDIOBJ.on('MIDImsg', function(data) {
@@ -138,12 +229,12 @@ $(function() {
             }
             if (ready) {
                 data.message.from = uid;
-                var msg = JSON.stringify(data.message);
 
+                var msg = JSON.stringify(data.message);
                 if (data.message.midi_msg[0] != 254) { //except active sensing
                     // console.log('sending');
                     if (recordMode) {
-                        record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], data.message.time - recordStartTime]);
+                        record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], (data.message.time - recordStartTime).toFixed(4)]);
                     }
 
                     socket.emit('mmsg', msg);

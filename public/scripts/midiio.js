@@ -39,7 +39,7 @@ $(function() {
                         type: "MIDImsg",
                         message: {
                             midi_msg: MIDI_msg,
-                            time: event.receivedTime, // event.receivedTime is same as: performance.now()
+                            time: event.receivedTime.toFixed(4), // event.receivedTime is same as: performance.now()
                             timbre: 'sine'
                         },
 
@@ -66,7 +66,7 @@ $(function() {
                                 type: "MIDImsg",
                                 message: {
                                     midi_msg: MIDI_msg,
-                                    time: event.receivedTime, // event.receivedTime is same as: performance.now()
+                                    time: event.receivedTime.toFixed(4), // event.receivedTime is same as: performance.now()
                                     timbre: 'sine'
                                 }
                             });
