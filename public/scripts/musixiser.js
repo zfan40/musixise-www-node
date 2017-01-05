@@ -170,11 +170,23 @@ $(function() {
                 contentType: false
             }).done(function(data) {
                 var workURL = ('http://oaeyej2ty.bkt.clouddn.com/' + data.data);
-
+                // "content": "string",
+                // "cover": "string",
+                // "createdDate": "2016-12-30T11:17:57.128Z",
+                // "id": 0,
+                // "status": 0,
+                // "title": "string",
+                // "url": "string",
+                // "userId": 0
                 $.ajax({
                     url: "//api.musixise.com/api/work/create",
                     type: 'POST',
-                    data: JSON.stringify({content:workURL}),
+                    data: JSON.stringify({
+                        title:$('input').value();
+                        content:$('input').value();
+                        cover:$('input').value();
+                        url: workURL
+                    }),
                     beforeSend: function(xhr, settings) {
                         xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
                         xhr.setRequestHeader("Authorization", "Bearer " + access_token);
