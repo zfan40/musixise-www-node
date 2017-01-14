@@ -9,6 +9,7 @@ $(function() {
     var recordStartTime = 0;
     var socket = io('http://io.musixise.com');
     var currentAudienceAmount = 0;
+    var workCoverImg = '';
     //www.musixise.com/stage/fzw  => fzw (as stage name for socket)
     var uid = location.href.match(/.*?stage\/(.*)/)[1];
 
@@ -169,7 +170,7 @@ $(function() {
                 processData: false,
                 contentType: false
             }).done(function(data) {
-                var workURL = ('http://oaeyej2ty.bkt.clouddn.com/' + data.data);
+                var workURL = ('http://oiqvdjk3s.bkt.clouddn.com/' + data.data);
                 // "content": "string",
                 // "cover": "string",
                 // "createdDate": "2016-12-30T11:17:57.128Z",
@@ -182,9 +183,9 @@ $(function() {
                     url: "//api.musixise.com/api/work/create",
                     type: 'POST',
                     data: JSON.stringify({
-                        title:$('input').value();
-                        content:$('input').value();
-                        cover:$('input').value();
+                        title:$('#work-title').val(),
+                        content:$('#work-description').val(),
+                        cover:workCoverImg,
                         url: workURL
                     }),
                     beforeSend: function(xhr, settings) {
