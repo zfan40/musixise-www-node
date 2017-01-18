@@ -198,6 +198,7 @@ $(function() {
                         console.log(data);
                         alert('上传成功，请登录APP查看');
                         record = [];
+                        $('.mask').hide();
                         $('.publishBtn').prop("disabled", true);
                     },
                     error: function() {}
