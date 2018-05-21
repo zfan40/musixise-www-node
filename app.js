@@ -4,6 +4,7 @@ const messages = require('./controllers/messages');
 const Home = require('./controllers/home');
 const Musician = require('./controllers/musician');
 const Stage = require('./controllers/stage');
+const Events = require('./controllers/events');
 
 const compress = require('koa-compress');
 const logger = require('koa-logger');
@@ -42,6 +43,8 @@ app.use(route.get('/musician/logout', Musician.Page.logout));
 // 创建艺人舞台
 app.use(route.get('/stage/:nickname', Stage.Page.create));
 app.use(route.post('/stage/:nickname', Stage.Page.create));
+/******* Events *******/
+app.use(route.get('/domain-sale', Events.Page.sale));
 /**********************************************/
 
 // Serve static files

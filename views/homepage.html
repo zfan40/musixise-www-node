@@ -10,7 +10,7 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="/styles/mainpage/swiper.min.css">
     <!-- Demo styles -->
-    <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+    <!-- <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'> -->
     <div style="display:none">
         <script src="http://s95.cnzz.com/z_stat.php?id=1260048285&web_id=1260048285" language="JavaScript"></script>
     </div>
@@ -26,7 +26,7 @@
         position: relative;
         height: 100%;
     }
-    
+
     body {
         background: #eee;
         font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -35,23 +35,23 @@
         margin: 0;
         padding: 0;
     }
-    
+
     input:focus,
     select:focus,
     textarea:focus,
     button:focus {
         outline: none;
     }
-    
+
     #header {
         width: 100%;
         position: fixed;
     }
-    
+
     #header .logo {
         background-color: #ffcc33;
     }
-    
+
     .swiper-container {
         width: 100%;
         height: 100%;
@@ -59,7 +59,7 @@
         margin-right: auto;
         background: #000;
     }
-    
+
     .swiper-slide {
         text-align: center;
         font-size: 18px;
@@ -77,12 +77,12 @@
         -webkit-align-items: center;
         align-items: center;
     }
-    
+
     .swiper-slide img {
         /*max-width: 100%;*/
         width: 1280px;
     }
-    
+
     .swiper-slide>p {
         position: absolute;
         color: #aaa;
@@ -93,21 +93,21 @@
         padding-bottom: 100px;
         transition-duration: 1000ms;
     }
-    
+
     .swiper-slide>p>r {
         font-size: 32px;
     }
-    
+
     .swiper-slide .left {
         left: 40px;
         font-family: 'Dancing Script', cursive;
     }
-    
+
     .swiper-slide .right {
         right: 40px;
         font-family: 'Dancing Script', cursive;
     }
-    
+
     .popup {
         background-color: rgba(255, 255, 255, 0.98);
         border-radius: 5px;
@@ -118,7 +118,7 @@
         z-index: 100;
         text-align: center;
     }
-    
+
     .popup .caption {
         text-align: center;
         display:flex;
@@ -130,7 +130,7 @@
         /*color:rgba(27, 80, 90, 0.5);*/
         /*color:#39797D;*/
         color: #000;
-        
+
     }
     .popup .caption .caption1 {
         flex:2;
@@ -149,7 +149,7 @@
         flex:1;
         font-size: 12px;
     }
-    
+
     .popup input {
         display: inline-block;
         height: 40px;
@@ -164,7 +164,7 @@
         color: #000;
         background-color: rgba(255, 255, 255, 0.98);
     }
-    
+
     .popup button {
         cursor: pointer;
         display: inline-block;
@@ -179,17 +179,17 @@
         background-color: #000;
         color: #fff;
     }
-    
+
     #reg-popup {
         width: 290px;
         padding-bottom: 30px;
     }
-    
+
     #login-popup {
         width: 290px;
-        padding-bottom: 30px;   
+        padding-bottom: 30px;
     }
-    
+
     .mask {
         position: fixed;
         top: 0;
@@ -204,32 +204,32 @@
         -webkit-box-pack: center;
         -webkit-box-align: center;
     }
-    
+
     ::-webkit-input-placeholder {
         color: #000;
     }
-    
+
     :-moz-placeholder {
         /* Firefox 18- */
         color: #000;
     }
-    
+
     ::-moz-placeholder {
         /* Firefox 19+ */
         color: #000;
     }
-    
+
     :-ms-input-placeholder {
         color: #000;
     }
-    
+
     #user-avatar {
         width: 50px;
         position: relative;
         height: 50px;
         top: -15px;
     }
-    
+
     #user-avatar img {
         width: 50px;
         height: 50px;
@@ -314,13 +314,13 @@
                 <p style="height:20px;line-height:18px;color:red;padding:6px 24px"></p>
                 <input placeholder="密码" type="password" id="reg-password"></input>
                 <p style="height:20px;line-height:18px;color:red;padding:6px 24px"></p>
-                <form style="display:none;" id="register-by-wechat" method="post" action="/z/register/wechat">  
+                <form style="display:none;" id="register-by-wechat" method="post" action="/z/register/wechat">
                     <input type="submit" value="微信注册" >
                 </form>
-                <form style="display:none;" id="register-by-weibo" method="post" action="/z/register/weibo">  
+                <form style="display:none;" id="register-by-weibo" method="post" action="/z/register/weibo">
                     <input type="submit" value="微博注册" >
                 </form>
-                <form style="display:none;" id="register-by-qq" method="post" action="/z/register/qq">  
+                <form style="display:none;" id="register-by-qq" method="post" action="/z/register/qq">
                     <input type="submit" value="QQ注册" >
                 </form>
                 <button id="reg-btn">注册</button>
@@ -339,17 +339,17 @@
                 <input placeholder="用户名" type="text" id="login-username"></input>
                 <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
                 <input placeholder="密码" type="password" id="login-password"></input>
-                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>    
-                <form style="display:none;" id="signin-by-wechat" method="post" action="/z/signin/wechat"> 
+                <p style="height:20px;line-height:20px;color:red;padding:10px 24px"></p>
+                <form style="display:none;" id="signin-by-wechat" method="post" action="/z/signin/wechat">
                     <input type="submit" value="微信登录" >
                 </form>
-                <form style="display:none;" id="signin-by-weibo" method="post" action="/z/signin/weibo">  
+                <form style="display:none;" id="signin-by-weibo" method="post" action="/z/signin/weibo">
                     <input type="submit" value="微博登录" >
                 </form>
-                <form style="display:none;" id="signin-by-qq" method="post" action="/z/signin/qq">  
+                <form style="display:none;" id="signin-by-qq" method="post" action="/z/signin/qq">
                     <input type="submit" value="QQ登录" >
                 </form>
-                
+
                 <button id="login-btn">登陆</button>
             </div>
         </div>

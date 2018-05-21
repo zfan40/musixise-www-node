@@ -250,7 +250,7 @@ $(function() {
                     if (recordMode) {
                         record.push([data.message.midi_msg[0], data.message.midi_msg[1], data.message.midi_msg[2], (data.message.time - recordStartTime).toFixed(4)]);
                     }
-
+                    console.log('to emit',msg);
                     socket.emit('mmsg', msg);
                 }
 
