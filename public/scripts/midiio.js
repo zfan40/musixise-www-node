@@ -31,7 +31,6 @@ $(function() {
                 activeInputID.push(input.value.id);
                 // console.log('bind');
                 input.value.onmidimessage = function(event) {
-
                     var MIDI_msg = event.data;
                     // console.log(MIDI_msg, 'by ' + event.currentTarget.id + 'with timre ' + 0);
                     //instant 入键
@@ -39,7 +38,7 @@ $(function() {
                         type: "MIDImsg",
                         message: {
                             midi_msg: MIDI_msg,
-                            time: event.receivedTime, // event.receivedTime is same as: performance.now()
+                            time: event.timeStamp, // event.receivedTime is same as: performance.now()
                             timbre: 'sine'
                         },
 
@@ -66,7 +65,7 @@ $(function() {
                                 type: "MIDImsg",
                                 message: {
                                     midi_msg: MIDI_msg,
-                                    time: event.receivedTime, // event.receivedTime is same as: performance.now()
+                                    time: event.timeStamp.toFixed(4), // was event.receivedTime, is same as: performance.now()
                                     timbre: 'sine'
                                 }
                             });
@@ -98,7 +97,7 @@ $(function() {
                             type: "MIDImsg",
                             message: {
                                 midi_msg: MIDI_msg,
-                                time: event.receivedTime, // event.receivedTime is same as: performance.now()
+                                time: event.timeStamp, // was,event.receivedTime is same as: performance.now()
                                 timbre: timbre
                             }
                         });
